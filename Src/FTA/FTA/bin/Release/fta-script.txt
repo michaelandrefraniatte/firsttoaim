@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="file:///C:/fta/foundation.min.css" />
+    <link rel="stylesheet" href="file:///C:/fta/tribute.css" />
+    <style>
+	.svelte-1xis06h {
+		display: none;
+	}
+    </style>
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 16px Arial;
+            margin: 20px;
+        }
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #444;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #eee;
+    }
+
+        input {
+            border: 1px solid transparent;
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-size: 16px;
+            width: 14%;
+        }
+
+            input[type=text] {
+                background-color: #f1f1f1;
+                width: 100%;
+            }
+
+            input[type=submit] {
+                color: #fff;
+                cursor: pointer;
+            }
+    </style>
+    <style>
+
+        .tribute-demo-input {
+            outline: none;
+            border: 1px solid #eee;
+            padding: 3px 5px;
+            border-radius: 2px;
+            font-size: 15px;
+            min-height: 32px;
+            cursor: text;
+        }
+
+            .tribute-demo-input:focus {
+                border-color: #d1d1d1;
+                background-color: #fbfbfb;
+            }
+
+        [contenteditable="true"]:empty:before {
+            content: attr(placeholder);
+            display: block;
+            color: #ccc;
+        }
+
+        #test-autocomplete-container {
+            position: relative;
+        }
+
+        #test-autocomplete-textarea-container {
+            position: relative;
+        }
+
+        .float-right {
+            float: right;
+        }
+    </style>
+    <style>
+
+
+        .script {
+            position: relative;
+            top: 20px;
+            left: 2.5%;
+            width: 95%;
+            height: 95%;
+        }
+
+        .statement {
+            color: orange;
+        }
+
+        #test-autocomplete-textarea-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        #test-autocomplete-textarea {
+            width: 100%;
+            height: 550px;
+            padding: 10px;
+            background-color: #444;
+            color: white;
+            font-size: 14px;
+            font-family: monospace;
+    	    overflow: auto;
+        }
+    </style>
+    <style>
+
+        :root {
+            --animation_speed: 600ms;
+            --animation_delay: 200ms;
+        }
+
+        .jp-posts {
+            position: absolute;
+            overflow: hidden;
+            background-image: linear-gradient(55deg, rgba(208, 208, 208, 0.03) 0%, rgba(208, 208, 208, 0.03) 20%, rgba(55, 55, 55, 0.03) 20%, rgba(55, 55, 55, 0.03) 40%, rgba(81, 81, 81, 0.03) 40%, rgba(81, 81, 81, 0.03) 60%, rgba(208, 208, 208, 0.03) 60%, rgba(208, 208, 208, 0.03) 80%, rgba(191, 191, 191, 0.03) 80%, rgba(191, 191, 191, 0.03) 100%), linear-gradient(257deg, rgba(72, 72, 72, 0.03) 0%, rgba(72, 72, 72, 0.03) 16.667%, rgba(138, 138, 138, 0.03) 16.667%, rgba(138, 138, 138, 0.03) 33.334%, rgba(54, 54, 54, 0.03) 33.334%, rgba(54, 54, 54, 0.03) 50.001%, rgba(161, 161, 161, 0.03) 50.001%, rgba(161, 161, 161, 0.03) 66.668%, rgba(17, 17, 17, 0.03) 66.668%, rgba(17, 17, 17, 0.03) 83.335%, rgba(230, 230, 230, 0.03) 83.335%, rgba(230, 230, 230, 0.03) 100.002%), linear-gradient(47deg, rgba(191, 191, 191, 0.01) 0%, rgba(191, 191, 191, 0.01) 16.667%, rgba(27, 27, 27, 0.01) 16.667%, rgba(27, 27, 27, 0.01) 33.334%, rgba(66, 66, 66, 0.01) 33.334%, rgba(66, 66, 66, 0.01) 50.001%, rgba(36, 36, 36, 0.01) 50.001%, rgba(36, 36, 36, 0.01) 66.668%, rgba(230, 230, 230, 0.01) 66.668%, rgba(230, 230, 230, 0.01) 83.335%, rgba(93, 93, 93, 0.01) 83.335%, rgba(93, 93, 93, 0.01) 100.002%), linear-gradient(90deg, #F3F3F3, #F3F3F3);
+            padding: 4vw 0;
+        }
+
+        .jp-posts__wrap {
+            position: absolute;
+            transition: all var(--animation_speed) ease;
+        }
+
+        .jp-post {
+            position: absolute;
+            backface-visibility: hidden;
+            z-index: 1;
+            width: 100%;
+            padding: 0 calc(4vw + 2em);
+        }
+
+            .jp-post.-current {
+                transform: translateX(0);
+                z-index: 2;
+            }
+
+                .jp-post.-current.-moveleft {
+                    transform-origin: right center;
+                    animation: leave var(--animation_speed);
+                    opacity: 0;
+                }
+
+                .jp-post.-current.-moveright {
+                    transform-origin: left center;
+                    animation: leave var(--animation_speed);
+                    opacity: 0;
+                }
+
+            .jp-post.-hidden {
+                position: absolute;
+                top: 0;
+            }
+
+                .jp-post.-hidden.-moving {
+                    z-index: 3;
+                }
+
+                .jp-post.-hidden.-moveleft, .jp-post.-hidden.-moveright {
+                    transform: translateX(0);
+                }
+
+            .jp-post.-next {
+                transform: translateX(100vw);
+            }
+
+            .jp-post.-prev {
+                transform: translateX(-100vw);
+            }
+
+            .jp-post.-moving {
+                transition: all var(--animation_speed) cubic-bezier(0.165, 0.84, 0.44, 1) var(--animation_delay);
+            }
+
+                .jp-post.-moving.-current {
+                    transition: transform var(--animation_speed) cubic-bezier(0.94, 0.01, 1, 1.02), opacity var(--animation_speed) cubic-bezier(0.94, 0.01, 1, 1.02);
+                }
+
+        @keyframes leave {
+            0% {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scaleX(2);
+                opacity: 0;
+            }
+        }
+
+        .jp-post__image {
+            display: table;
+            margin: auto;
+        }
+
+        .jp-posts__nav {
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            background-color: lightgray;
+            color: white;
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 300ms ease;
+            z-index: 10;
+        }
+
+            .jp-posts__nav.-prev {
+                left: 1vw;
+                grid-area: prev;
+            }
+
+            .jp-posts__nav.-next {
+                grid-area: next;
+                right: 1vw;
+            }
+
+            .jp-posts__nav:hover {
+                box-shadow: 0 0 0 0.3em white, 0 0 0 0.5em #adddff;
+            }
+
+                .jp-posts__nav:hover:focus {
+                    box-shadow: 0 0 0 0.3em white, 0 0 0 0.5em #adddff;
+                }
+
+            .jp-posts__nav:focus {
+                box-shadow: 0 0 0 0.2em #adddff;
+                outline: none;
+            }
+
+        button {
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide">
+        <div class="jp-posts">
+            <button v-if="posts" class="jp-posts__nav -prev" onclick='prevPage("microsoft-mouse.txt")'>
+                <span class="hidden"><b><</b></span>
+            </button>
+            <button v-if="posts" class="jp-posts__nav -next" onclick='nextPage("xbox-controller.txt")'>
+                <span class="hidden"><b>></b></span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function prevPage(page) {
+        	LoadPage(page);
+        }
+        function nextPage(page) {
+        	LoadPage(page);
+        }
+    </script>
+
+    <div class="buttons">
+        <input id="runscript" type="submit" onclick='pressScriptButtons("Run Script")' value="Run Script" style="background-color: green;">
+        <input id="testscript" type="submit" onclick='pressScriptButtons("Test Script")' value="Test Script" style="background-color: black;">
+        <input id="openscript" type="submit" onclick='pressScriptButtons("Open Script")' value="Open Script" style="background-color: Blue;">
+        <input id="savescript" type="submit" onclick='pressScriptButtons("Save Script")' value="Save Script" style="background-color: DodgerBlue;">
+        <input id="savescriptas" type="submit" onclick='pressScriptButtons("Save Script As")' value="Save Script As" style="background-color: DodgerBlue;">
+        <input id="connectcontrollers" type="submit" onclick='pressScriptButtons("Connect Controllers")' value="Connect Controllers" style="background-color: purple;">
+        <input id="disconnectcontrollers" type="submit" onclick='pressScriptButtons("Disconnect Controllers")' value="Disconnect Controllers" style="background-color: red;">
+    </div>
+
+    <script>
+        function pressScriptButtons(command) {
+        	ExecScript(command);
+        }
+    </script>
+
+    <div class="script">
+        <div>
+            <h5>
+                Enter your <code>script</code> here :
+            </h5>
+            <div id="test-autocomplete-textarea-container">
+                <div contenteditable="true" id="test-autocomplete-textarea" placeholder="Codes..." spellcheck="false"></div>
+            </div>
+        </div>
+    </div>
+
+  <script>
+	var outputs = ["SpeechToText", "keys12345", "keys54321", "valchanged", "wd", "wu", "irmode", "getstate", "pollcount", "UsersAllowedList", "sleeptime", "KeyboardMouseDriverType", "MouseMoveX", "MouseMoveY", "MouseAbsX", "MouseAbsY", "MouseDesktopX", "MouseDesktopY", "SendLeftClick", "SendRightClick", "SendMiddleClick", "SendWheelUp", "SendWheelDown", "SendLeft", "SendRight", "SendUp", "SendDown", "SendLButton", "SendRButton", "SendCancel", "SendMBUTTON", "SendXBUTTON1", "SendXBUTTON2", "SendBack", "SendTab", "SendClear", "SendReturn", "SendSHIFT", "SendCONTROL", "SendMENU", "SendPAUSE", "SendCAPITAL", "SendKANA", "SendHANGEUL", "SendHANGUL", "SendJUNJA", "SendFINAL", "SendHANJA", "SendKANJI", "SendEscape", "SendCONVERT", "SendNONCONVERT", "SendACCEPT", "SendMODECHANGE", "SendSpace", "SendPRIOR", "SendNEXT", "SendEND", "SendHOME", "SendLEFT", "SendUP", "SendRIGHT", "SendDOWN", "SendSELECT", "SendPRINT", "SendEXECUTE", "SendSNAPSHOT", "SendINSERT", "SendDELETE", "SendHELP", "SendAPOSTROPHE", "Send0", "Send1", "Send2", "Send3", "Send4", "Send5", "Send6", "Send7", "Send8", "Send9", "SendA", "SendB", "SendC", "SendD", "SendE", "SendF", "SendG", "SendH", "SendI", "SendJ", "SendK", "SendL", "SendM", "SendN", "SendO", "SendP", "SendQ", "SendR", "SendS", "SendT", "SendU", "SendV", "SendW", "SendX", "SendY", "SendZ", "SendLWIN", "SendRWIN", "SendAPPS", "SendSLEEP", "SendNUMPAD0", "SendNUMPAD1", "SendNUMPAD2", "SendNUMPAD3", "SendNUMPAD4", "SendNUMPAD5", "SendNUMPAD6", "SendNUMPAD7", "SendNUMPAD8", "SendNUMPAD9", "SendMULTIPLY", "SendADD", "SendSEPARATOR", "SendSUBTRACT", "SendDECIMAL", "SendDIVIDE", "SendF1", "SendF2", "SendF3", "SendF4", "SendF5", "SendF6", "SendF7", "SendF8", "SendF9", "SendF10", "SendF11", "SendF12", "SendF13", "SendF14", "SendF15", "SendF16", "SendF17", "SendF18", "SendF19", "SendF20", "SendF21", "SendF22", "SendF23", "SendF24", "SendNUMLOCK", "SendSCROLL", "SendLeftShift", "SendRightShift", "SendLeftControl", "SendRightControl", "SendLMENU", "SendRMENU", "back", "start", "A", "B", "X", "Y", "up", "left", "down", "right", "leftstick", "rightstick", "leftbumper", "rightbumper", "lefttrigger", "righttrigger", "leftstickx", "leftsticky", "rightstickx", "rightsticky", "centery"];
+	var inputs = ["ButtonAPressed", "ButtonBPressed", "ButtonXPressed", "ButtonYPressed", "ButtonStartPressed", "ButtonBackPressed", "ButtonDownPressed", "ButtonUpPressed", "ButtonLeftPressed", "ButtonRightPressed", "ButtonShoulderLeftPressed", "ButtonShoulderRightPressed", "ThumbpadLeftPressed", "ThumbpadRightPressed", "TriggerLeftPressed", "TriggerRightPressed", "TriggerLeftPressThreshold", "TriggerRightPressThreshold", "TriggerLeftPosition", "TriggerRightPosition", "ThumbLeftX", "ThumbLeftY", "ThumbRightX", "ThumbRightY", "TextFromSpeech", "Controller_A", "Controller_B", "Controller_X", "Controller_Y", "Controller_LB", "Controller_RB", "Controller_LT", "Controller_RT", "Controller_MAP", "Controller_MENU", "Controller_LSTICK", "Controller_RSTICK", "Controller_DU", "Controller_DD", "Controller_DL", "Controller_DR", "Controller_XBOX", "Controller_LX", "Controller_LY", "Controller_RX", "Controller_RY", "Scale", "new string[] { }", '"sendinput"', "width", "height", "MouseHookX", "MouseHookY", "MouseHookButtonX1", "MouseHookButtonX2", "MouseHookWheelUp", "MouseHookWheelDown", "MouseHookRightButton", "MouseHookLeftButton", "MouseHookMiddleButton", "MouseHookXButton", "Key_LBUTTON", "Key_RBUTTON", "Key_CANCEL", "Key_MBUTTON", "Key_XBUTTON1", "Key_XBUTTON2", "Key_BACK", "Key_Tab", "Key_CLEAR", "Key_Return", "Key_SHIFT", "Key_CONTROL", "Key_MENU", "Key_PAUSE", "Key_CAPITAL", "Key_KANA", "Key_HANGEUL", "Key_HANGUL", "Key_JUNJA", "Key_FINAL", "Key_HANJA", "Key_KANJI", "Key_Escape", "Key_CONVERT", "Key_NONCONVERT", "Key_ACCEPT", "Key_MODECHANGE", "Key_Space", "Key_PRIOR", "Key_NEXT", "Key_END", "Key_HOME", "Key_LEFT", "Key_UP", "Key_RIGHT", "Key_DOWN", "Key_SELECT", "Key_PRINT", "Key_EXECUTE", "Key_SNAPSHOT", "Key_INSERT", "Key_DELETE", "Key_HELP", "Key_APOSTROPHE", "Key_0", "Key_1", "Key_2", "Key_3", "Key_4", "Key_5", "Key_6", "Key_7", "Key_8", "Key_9", "Key_A", "Key_B", "Key_C", "Key_D", "Key_E", "Key_F", "Key_G", "Key_H", "Key_I", "Key_J", "Key_K", "Key_L", "Key_M", "Key_N", "Key_O", "Key_P", "Key_Q", "Key_R", "Key_S", "Key_T", "Key_U", "Key_V", "Key_W", "Key_X", "Key_Y", "Key_Z", "Key_LWIN", "Key_RWIN", "Key_APPS", "Key_SLEEP", "Key_NUMPAD0", "Key_NUMPAD1", "Key_NUMPAD2", "Key_NUMPAD3", "Key_NUMPAD4", "Key_NUMPAD5", "Key_NUMPAD6", "Key_NUMPAD7", "Key_NUMPAD8", "Key_NUMPAD9", "Key_MULTIPLY", "Key_ADD", "Key_SEPARATOR", "Key_SUBTRACT", "Key_DECIMAL", "Key_DIVIDE", "Key_F1", "Key_F2", "Key_F3", "Key_F4", "Key_F5", "Key_F6", "Key_F7", "Key_F8", "Key_F9", "Key_F10", "Key_F11", "Key_F12", "Key_F13", "Key_F14", "Key_F15", "Key_F16", "Key_F17", "Key_F18", "Key_F19", "Key_F20", "Key_F21", "Key_F22", "Key_F23", "Key_F24", "Key_NUMLOCK", "Key_SCROLL", "Key_LeftShift", "Key_RightShift", "Key_LeftControl", "Key_RightControl", "Key_LMENU", "Key_RMENU", "Key_BROWSER_BACK", "Key_BROWSER_FORWARD", "Key_BROWSER_REFRESH", "Key_BROWSER_STOP", "Key_BROWSER_SEARCH", "Key_BROWSER_FAVORITES", "Key_BROWSER_HOME", "Key_VOLUME_MUTE", "Key_VOLUME_DOWN", "Key_VOLUME_UP", "Key_MEDIA_NEXT_TRACK", "Key_MEDIA_PREV_TRACK", "Key_MEDIA_STOP", "Key_MEDIA_PLAY_PAUSE", "Key_LAUNCH_MAIL", "Key_LAUNCH_MEDIA_SELECT", "Key_LAUNCH_APP1", "Key_LAUNCH_APP2", "Key_OEM_1", "Key_OEM_PLUS", "Key_OEM_COMMA", "Key_OEM_MINUS", "Key_OEM_PERIOD", "Key_OEM_2", "Key_OEM_3", "Key_OEM_4", "Key_OEM_5", "Key_OEM_6", "Key_OEM_7", "Key_OEM_8", "Key_OEM_102", "Key_PROCESSKEY", "Key_PACKET", "Key_ATTN", "Key_CRSEL", "Key_EXSEL", "Key_EREOF", "Key_PLAY", "Key_ZOOM", "Key_NONAME", "Key_PA1", "Key_OEM_CLEAR", "irx", "iry", "mWSButtonStateA", "mWSButtonStateB", "mWSButtonStateMinus", "mWSButtonStateHome", "mWSButtonStatePlus", "mWSButtonStateOne", "mWSButtonStateTwo", "mWSButtonStateUp", "mWSButtonStateDown", "mWSButtonStateLeft", "mWSButtonStateRight", "mWSRawValuesX", "mWSRawValuesY", "mWSRawValuesZ", "mWSNunchuckStateRawJoystickX", "mWSNunchuckStateRawJoystickY", "mWSNunchuckStateRawValuesX", "mWSNunchuckStateRawValuesY", "mWSNunchuckStateRawValuesZ", "mWSNunchuckStateC", "mWSNunchuckStateZ", "stickRight", "RightButtonSHOULDER_1", "RightButtonSHOULDER_2", "RightButtonSR", "RightButtonSL", "RightButtonDPAD_DOWN", "RightButtonDPAD_RIGHT", "RightButtonDPAD_UP", "RightButtonDPAD_LEFT", "RightButtonPLUS", "RightButtonHOME", "RightButtonSTICK", "RightButtonACC", "RightButtonSPA", "RightRollLeft", "RightRollRight", "RightAccelX", "RightAccelY", "RightGyroX", "RightGyroY", "stickLeft", "LeftButtonSHOULDER_1", "LeftButtonSHOULDER_2", "LeftButtonSR", "LeftButtonSL", "LeftButtonDPAD_DOWN", "LeftButtonDPAD_RIGHT", "LeftButtonDPAD_UP", "LeftButtonDPAD_LEFT", "LeftButtonMINUS", "LeftButtonCAPTURE", "LeftButtonSTICK", "LeftButtonACC", "LeftButtonSMA", "LeftRollLeft", "LeftRollRight", "LeftAccelX", "LeftAccelY", "LeftGyroX", "LeftGyroY"];
+	var ponctuations = [";", "<", ">", "<=", ">=", "=", "!", "|", "&", "false", "true", "(", ")", "if", "else", "{", "}"];
+  </script>
+
+    <script src="file:///C:/fta/tribute.js"></script>
+    <script>
+
+        // example of Tribute in autocomplete mode
+
+        var tributeAttributes = {
+        autocompleteMode: true,
+        noMatchTemplate: "",
+        values: [
+        { key: ";", value: ";" },
+        { key: "<", value: "<" },
+        { key: ">", value: ">" },
+        { key: "<=", value: "<=" },
+        { key: ">=", value: ">=" },
+        { key: "=", value: "=" },
+        { key: "!", value: "!" },
+        { key: "|", value: "|" },
+        { key: "&", value: "&" },
+        { key: "false", value: "false" },
+        { key: "true", value: "true" },
+        { key: "(", value: "(" },
+        { key: ")", value: ")" },
+        { key: "if", value: "if" },
+        { key: "else", value: "else" },
+        { key: "{", value: "{" },
+        { key: "}", value: "}" },
+        { key: "ButtonAPressed", value: "ButtonAPressed" },
+        { key: "ButtonBPressed", value: "ButtonBPressed" },
+        { key: "ButtonXPressed", value: "ButtonXPressed" },
+        { key: "ButtonYPressed", value: "ButtonYPressed" },
+        { key: "ButtonStartPressed", value: "ButtonStartPressed" },
+        { key: "ButtonBackPressed", value: "ButtonBackPressed" },
+        { key: "ButtonDownPressed", value: "ButtonDownPressed" },
+        { key: "ButtonUpPressed", value: "ButtonUpPressed" },
+        { key: "ButtonLeftPressed", value: "ButtonLeftPressed" },
+        { key: "ButtonRightPressed", value: "ButtonRightPressed" },
+        { key: "ButtonShoulderLeftPressed", value: "ButtonShoulderLeftPressed" },
+        { key: "ButtonShoulderRightPressed", value: "ButtonShoulderRightPressed" },
+        { key: "ThumbpadLeftPressed", value: "ThumbpadLeftPressed" },
+        { key: "ThumbpadRightPressed", value: "ThumbpadRightPressed" },
+        { key: "TriggerLeftPressed", value: "TriggerLeftPressed" },
+        { key: "TriggerRightPressed", value: "TriggerRightPressed" },
+        { key: "TriggerLeftPressThreshold", value: "TriggerLeftPressThreshold" },
+        { key: "TriggerRightPressThreshold", value: "TriggerRightPressThreshold" },
+        { key: "TriggerLeftPosition", value: "TriggerLeftPosition" },
+        { key: "TriggerRightPosition", value: "TriggerRightPosition" },
+        { key: "ThumbLeftX", value: "ThumbLeftX" },
+        { key: "ThumbLeftY", value: "ThumbLeftY" },
+        { key: "ThumbRightX", value: "ThumbRightX" },
+        { key: "ThumbRightY", value: "ThumbRightY" },
+        { key: "TextFromSpeech", value: "TextFromSpeech" },
+        { key: "SpeechToText", value: "SpeechToText" },
+        { key: "keys12345", value: "keys12345" },
+        { key: "keys54321", value: "keys54321" },
+        { key: "valchanged", value: "valchanged" },
+        { key: "wd", value: "wd" },
+        { key: "wu", value: "wu" },
+        { key: "getstate", value: "getstate" },
+        { key: "pollcount", value: "pollcount" },
+        { key: "Scale", value: "Scale" },
+        { key: "Controller_A", value: "Controller_A" },
+        { key: "Controller_B", value: "Controller_B" },
+        { key: "Controller_X", value: "Controller_X" },
+        { key: "Controller_Y", value: "Controller_Y" },
+        { key: "Controller_LB", value: "Controller_LB" },
+        { key: "Controller_RB", value: "Controller_RB" },
+        { key: "Controller_LT", value: "Controller_LT" },
+        { key: "Controller_RT", value: "Controller_RT" },
+        { key: "Controller_MAP", value: "Controller_MAP" },
+        { key: "Controller_MENU", value: "Controller_MENU" },
+        { key: "Controller_LSTICK", value: "Controller_LSTICK" },
+        { key: "Controller_RSTICK", value: "Controller_RSTICK" },
+        { key: "Controller_DU", value: "Controller_DU" },
+        { key: "Controller_DD", value: "Controller_DD" },
+        { key: "Controller_DL", value: "Controller_DL" },
+        { key: "Controller_DR", value: "Controller_DR" },
+        { key: "Controller_XBOX", value: "Controller_XBOX" },
+        { key: "Controller_LX", value: "Controller_LX" },
+        { key: "Controller_LY", value: "Controller_LY" },
+        { key: "Controller_RX", value: "Controller_RX" },
+        { key: "Controller_RY", value: "Controller_RY" },
+        { key: "new string[] { }", value: "new string[] { }" },
+        { key: '"sendinput"', value: '"sendinput"' },
+        { key: "width", value: "width" },
+        { key: "height", value: "height" },
+        { key: "MouseHookX", value: "MouseHookX" },
+        { key: "MouseHookY", value: "MouseHookY" },
+        { key: "MouseHookButtonX1", value: "MouseHookButtonX1" },
+        { key: "MouseHookButtonX2", value: "MouseHookButtonX2" },
+        { key: "MouseHookWheelUp", value: "MouseHookWheelUp" },
+        { key: "MouseHookWheelDown", value: "MouseHookWheelDown" },
+        { key: "MouseHookRightButton", value: "MouseHookRightButton" },
+        { key: "MouseHookLeftButton", value: "MouseHookLeftButton" },
+        { key: "MouseHookMiddleButton", value: "MouseHookMiddleButton" },
+        { key: "MouseHookXButton", value: "MouseHookXButton" },
+        { key: "Key_LBUTTON", value: "Key_LBUTTON" },
+        { key: "Key_RBUTTON", value: "Key_RBUTTON" },
+        { key: "Key_CANCEL", value: "Key_CANCEL" },
+        { key: "Key_MBUTTON", value: "Key_MBUTTON" },
+        { key: "Key_XBUTTON1", value: "Key_XBUTTON1" },
+        { key: "Key_XBUTTON2", value: "Key_XBUTTON2" },
+        { key: "Key_BACK", value: "Key_BACK" },
+        { key: "Key_Tab", value: "Key_Tab" },
+        { key: "Key_CLEAR", value: "Key_CLEAR" },
+        { key: "Key_Return", value: "Key_Return" },
+        { key: "Key_SHIFT", value: "Key_SHIFT" },
+        { key: "Key_CONTROL", value: "Key_CONTROL" },
+        { key: "Key_MENU", value: "Key_MENU" },
+        { key: "Key_PAUSE", value: "Key_PAUSE" },
+        { key: "Key_CAPITAL", value: "Key_CAPITAL" },
+        { key: "Key_KANA", value: "Key_KANA" },
+        { key: "Key_HANGEUL", value: "Key_HANGEUL" },
+        { key: "Key_HANGUL", value: "Key_HANGUL" },
+        { key: "Key_JUNJA", value: "Key_JUNJA" },
+        { key: "Key_FINAL", value: "Key_FINAL" },
+        { key: "Key_HANJA", value: "Key_HANJA" },
+        { key: "Key_KANJI", value: "Key_KANJI" },
+        { key: "Key_Escape", value: "Key_Escape" },
+        { key: "Key_CONVERT", value: "Key_CONVERT" },
+        { key: "Key_NONCONVERT", value: "Key_NONCONVERT" },
+        { key: "Key_ACCEPT", value: "Key_ACCEPT" },
+        { key: "Key_MODECHANGE", value: "Key_MODECHANGE" },
+        { key: "Key_Space", value: "Key_Space" },
+        { key: "Key_PRIOR", value: "Key_PRIOR" },
+        { key: "Key_NEXT", value: "Key_NEXT" },
+        { key: "Key_END", value: "Key_END" },
+        { key: "Key_HOME", value: "Key_HOME" },
+        { key: "Key_LEFT", value: "Key_LEFT" },
+        { key: "Key_UP", value: "Key_UP" },
+        { key: "Key_RIGHT", value: "Key_RIGHT" },
+        { key: "Key_DOWN", value: "Key_DOWN" },
+        { key: "Key_SELECT", value: "Key_SELECT" },
+        { key: "Key_PRINT", value: "Key_PRINT" },
+        { key: "Key_EXECUTE", value: "Key_EXECUTE" },
+        { key: "Key_SNAPSHOT", value: "Key_SNAPSHOT" },
+        { key: "Key_INSERT", value: "Key_INSERT" },
+        { key: "Key_DELETE", value: "Key_DELETE" },
+        { key: "Key_HELP", value: "Key_HELP" },
+        { key: "Key_APOSTROPHE", value: "Key_APOSTROPHE" },
+        { key: "Key_0", value: "Key_0" },
+        { key: "Key_1", value: "Key_1" },
+        { key: "Key_2", value: "Key_2" },
+        { key: "Key_3", value: "Key_3" },
+        { key: "Key_4", value: "Key_4" },
+        { key: "Key_5", value: "Key_5" },
+        { key: "Key_6", value: "Key_6" },
+        { key: "Key_7", value: "Key_7" },
+        { key: "Key_8", value: "Key_8" },
+        { key: "Key_9", value: "Key_9" },
+        { key: "Key_A", value: "Key_A" },
+        { key: "Key_B", value: "Key_B" },
+        { key: "Key_C", value: "Key_C" },
+        { key: "Key_D", value: "Key_D" },
+        { key: "Key_E", value: "Key_E" },
+        { key: "Key_F", value: "Key_F" },
+        { key: "Key_G", value: "Key_G" },
+        { key: "Key_H", value: "Key_H" },
+        { key: "Key_I", value: "Key_I" },
+        { key: "Key_J", value: "Key_J" },
+        { key: "Key_K", value: "Key_K" },
+        { key: "Key_L", value: "Key_L" },
+        { key: "Key_M", value: "Key_M" },
+        { key: "Key_N", value: "Key_N" },
+        { key: "Key_O", value: "Key_O" },
+        { key: "Key_P", value: "Key_P" },
+        { key: "Key_Q", value: "Key_Q" },
+        { key: "Key_R", value: "Key_R" },
+        { key: "Key_S", value: "Key_S" },
+        { key: "Key_T", value: "Key_T" },
+        { key: "Key_U", value: "Key_U" },
+        { key: "Key_V", value: "Key_V" },
+        { key: "Key_W", value: "Key_W" },
+        { key: "Key_X", value: "Key_X" },
+        { key: "Key_Y", value: "Key_Y" },
+        { key: "Key_Z", value: "Key_Z" },
+        { key: "Key_LWIN", value: "Key_LWIN" },
+        { key: "Key_RWIN", value: "Key_RWIN" },
+        { key: "Key_APPS", value: "Key_APPS" },
+        { key: "Key_SLEEP", value: "Key_SLEEP" },
+        { key: "Key_NUMPAD0", value: "Key_NUMPAD0" },
+        { key: "Key_NUMPAD1", value: "Key_NUMPAD1" },
+        { key: "Key_NUMPAD2", value: "Key_NUMPAD2" },
+        { key: "Key_NUMPAD3", value: "Key_NUMPAD3" },
+        { key: "Key_NUMPAD4", value: "Key_NUMPAD4" },
+        { key: "Key_NUMPAD5", value: "Key_NUMPAD5" },
+        { key: "Key_NUMPAD6", value: "Key_NUMPAD6" },
+        { key: "Key_NUMPAD7", value: "Key_NUMPAD7" },
+        { key: "Key_NUMPAD8", value: "Key_NUMPAD8" },
+        { key: "Key_NUMPAD9", value: "Key_NUMPAD9" },
+        { key: "Key_MULTIPLY", value: "Key_MULTIPLY" },
+        { key: "Key_ADD", value: "Key_ADD" },
+        { key: "Key_SEPARATOR", value: "Key_SEPARATOR" },
+        { key: "Key_SUBTRACT", value: "Key_SUBTRACT" },
+        { key: "Key_DECIMAL", value: "Key_DECIMAL" },
+        { key: "Key_DIVIDE", value: "Key_DIVIDE" },
+        { key: "Key_F1", value: "Key_F1" },
+        { key: "Key_F2", value: "Key_F2" },
+        { key: "Key_F3", value: "Key_F3" },
+        { key: "Key_F4", value: "Key_F4" },
+        { key: "Key_F5", value: "Key_F5" },
+        { key: "Key_F6", value: "Key_F6" },
+        { key: "Key_F7", value: "Key_F7" },
+        { key: "Key_F8", value: "Key_F8" },
+        { key: "Key_F9", value: "Key_F9" },
+        { key: "Key_F10", value: "Key_F10" },
+        { key: "Key_F11", value: "Key_F11" },
+        { key: "Key_F12", value: "Key_F12" },
+        { key: "Key_F13", value: "Key_F13" },
+        { key: "Key_F14", value: "Key_F14" },
+        { key: "Key_F15", value: "Key_F15" },
+        { key: "Key_F16", value: "Key_F16" },
+        { key: "Key_F17", value: "Key_F17" },
+        { key: "Key_F18", value: "Key_F18" },
+        { key: "Key_F19", value: "Key_F19" },
+        { key: "Key_F20", value: "Key_F20" },
+        { key: "Key_F21", value: "Key_F21" },
+        { key: "Key_F22", value: "Key_F22" },
+        { key: "Key_F23", value: "Key_F23" },
+        { key: "Key_F24", value: "Key_F24" },
+        { key: "Key_NUMLOCK", value: "Key_NUMLOCK" },
+        { key: "Key_SCROLL", value: "Key_SCROLL" },
+        { key: "Key_LeftShift", value: "Key_LeftShift" },
+        { key: "Key_RightShift", value: "Key_RightShift" },
+        { key: "Key_LeftControl", value: "Key_LeftControl" },
+        { key: "Key_RightControl", value: "Key_RightControl" },
+        { key: "Key_LMENU", value: "Key_LMENU" },
+        { key: "Key_RMENU", value: "Key_RMENU" },
+        { key: "Key_BROWSER_BACK", value: "Key_BROWSER_BACK" },
+        { key: "Key_BROWSER_FORWARD", value: "Key_BROWSER_FORWARD" },
+        { key: "Key_BROWSER_REFRESH", value: "Key_BROWSER_REFRESH" },
+        { key: "Key_BROWSER_STOP", value: "Key_BROWSER_STOP" },
+        { key: "Key_BROWSER_SEARCH", value: "Key_BROWSER_SEARCH" },
+        { key: "Key_BROWSER_FAVORITES", value: "Key_BROWSER_FAVORITES" },
+        { key: "Key_BROWSER_HOME", value: "Key_BROWSER_HOME" },
+        { key: "Key_VOLUME_MUTE", value: "Key_VOLUME_MUTE" },
+        { key: "Key_VOLUME_DOWN", value: "Key_VOLUME_DOWN" },
+        { key: "Key_VOLUME_UP", value: "Key_VOLUME_UP" },
+        { key: "Key_MEDIA_NEXT_TRACK", value: "Key_MEDIA_NEXT_TRACK" },
+        { key: "Key_MEDIA_PREV_TRACK", value: "Key_MEDIA_PREV_TRACK" },
+        { key: "Key_MEDIA_STOP", value: "Key_MEDIA_STOP" },
+        { key: "Key_MEDIA_PLAY_PAUSE", value: "Key_MEDIA_PLAY_PAUSE" },
+        { key: "Key_LAUNCH_MAIL", value: "Key_LAUNCH_MAIL" },
+        { key: "Key_LAUNCH_MEDIA_SELECT", value: "Key_LAUNCH_MEDIA_SELECT" },
+        { key: "Key_LAUNCH_APP1", value: "Key_LAUNCH_APP1" },
+        { key: "Key_LAUNCH_APP2", value: "Key_OEM_1" },
+        { key: "Key_OEM_PLUS", value: "Key_OEM_PLUS" },
+        { key: "Key_OEM_COMMA", value: "Key_OEM_MINUS" },
+        { key: "Key_OEM_PERIOD", value: "Key_OEM_PERIOD" },
+        { key: "Key_OEM_2", value: "Key_OEM_2" },
+        { key: "Key_OEM_3", value: "Key_OEM_3" },
+        { key: "Key_OEM_4", value: "Key_OEM_4" },
+        { key: "Key_OEM_5", value: "Key_OEM_5" },
+        { key: "Key_OEM_6", value: "Key_OEM_6" },
+        { key: "Key_OEM_7", value: "Key_OEM_7" },
+        { key: "Key_OEM_8", value: "Key_OEM_8" },
+        { key: "Key_OEM_102", value: "Key_OEM_102" },
+        { key: "Key_PROCESSKEY", value: "Key_PROCESSKEY" },
+        { key: "Key_PACKET", value: "Key_PACKET" },
+        { key: "Key_ATTN", value: "Key_ATTN" },
+        { key: "Key_CRSEL", value: "Key_CRSEL" },
+        { key: "Key_EXSEL", value: "Key_EXSEL" },
+        { key: "Key_EREOF", value: "Key_EREOF" },
+        { key: "Key_PLAY", value: "Key_PLAY" },
+        { key: "Key_ZOOM", value: "Key_ZOOM" },
+        { key: "Key_NONAME", value: "Key_NONAME" },
+        { key: "Key_PA1", value: "Key_PA1" },
+        { key: "Key_OEM_CLEAR", value: "Key_OEM_CLEAR" },
+        { key: "irx", value: "irx" },
+        { key: "iry", value: "iry" },
+        { key: "mWSButtonStateA", value: "mWSButtonStateA" },
+        { key: "mWSButtonStateB", value: "mWSButtonStateB" },
+        { key: "mWSButtonStateMinus", value: "mWSButtonStateMinus" },
+        { key: "mWSButtonStateHome", value: "mWSButtonStateHome" },
+        { key: "mWSButtonStatePlus", value: "mWSButtonStatePlus" },
+        { key: "mWSButtonStateOne", value: "mWSButtonStateOne" },
+        { key: "mWSButtonStateTwo", value: "mWSButtonStateTwo" },
+        { key: "mWSButtonStateUp", value: "mWSButtonStateUp" },
+        { key: "mWSButtonStateDown", value: "mWSButtonStateDown" },
+        { key: "mWSButtonStateLeft", value: "mWSButtonStateLeft" },
+        { key: "mWSButtonStateRight", value: "mWSButtonStateRight" },
+        { key: "mWSRawValuesX", value: "mWSRawValuesX" },
+        { key: "mWSRawValuesY", value: "mWSRawValuesY" },
+        { key: "mWSRawValuesZ", value: "mWSRawValuesZ" },
+        { key: "mWSNunchuckStateRawJoystickX", value: "mWSNunchuckStateRawJoystickX" },
+        { key: "mWSNunchuckStateRawJoystickY", value: "mWSNunchuckStateRawJoystickY" },
+        { key: "mWSNunchuckStateRawValuesX", value: "mWSNunchuckStateRawValuesX" },
+        { key: "mWSNunchuckStateRawValuesY", value: "mWSNunchuckStateRawValuesY" },
+        { key: "mWSNunchuckStateRawValuesZ", value: "mWSNunchuckStateRawValuesZ" },
+        { key: "mWSNunchuckStateC", value: "mWSNunchuckStateC" },
+        { key: "mWSNunchuckStateZ", value: "mWSNunchuckStateZ" },
+        { key: "stickRight", value: "stickRight" },
+        { key: "RightButtonSHOULDER_1", value: "RightButtonSHOULDER_1" },
+        { key: "RightButtonSHOULDER_2", value: "RightButtonSHOULDER_2" },
+        { key: "RightButtonSR", value: "RightButtonSR" },
+        { key: "RightButtonSL", value: "RightButtonSL" },
+        { key: "RightButtonDPAD_DOWN", value: "RightButtonDPAD_DOWN" },
+        { key: "RightButtonDPAD_RIGHT", value: "RightButtonDPAD_RIGHT" },
+        { key: "RightButtonDPAD_UP", value: "RightButtonDPAD_UP" },
+        { key: "RightButtonDPAD_LEFT", value: "RightButtonDPAD_LEFT" },
+        { key: "RightButtonPLUS", value: "RightButtonPLUS" },
+        { key: "RightButtonHOME", value: "RightButtonHOME" },
+        { key: "RightButtonSTICK", value: "RightButtonSTICK" },
+        { key: "RightButtonACC", value: "RightButtonACC" },
+        { key: "RightButtonSPA", value: "RightButtonSPA" },
+        { key: "RightRollLeft", value: "RightRollLeft" },
+        { key: "RightRollRight", value: "RightRollRight" },
+        { key: "RightAccelX", value: "RightAccelX" },
+        { key: "RightAccelY", value: "RightAccelY" },
+        { key: "RightGyroX", value: "RightGyroX" },
+        { key: "RightGyroY", value: "RightGyroY" },
+        { key: "stickLeft", value: "stickLeft" },
+        { key: "LeftButtonSHOULDER_1", value: "LeftButtonSHOULDER_1" },
+        { key: "LeftButtonSHOULDER_2", value: "LeftButtonSHOULDER_2" },
+        { key: "LeftButtonSR", value: "LeftButtonSR" },
+        { key: "LeftButtonSL", value: "LeftButtonSL" },
+        { key: "LeftButtonDPAD_DOWN", value: "LeftButtonDPAD_DOWN" },
+        { key: "LeftButtonDPAD_RIGHT", value: "LeftButtonDPAD_RIGHT" },
+        { key: "LeftButtonDPAD_UP", value: "LeftButtonDPAD_UP" },
+        { key: "LeftButtonDPAD_LEFT", value: "LeftButtonDPAD_LEFT" },
+        { key: "LeftButtonMINUS", value: "LeftButtonMINUS" },
+        { key: "LeftButtonCAPTURE", value: "LeftButtonCAPTURE" },
+        { key: "LeftButtonSTICK", value: "LeftButtonSTICK" },
+        { key: "LeftButtonACC", value: "LeftButtonACC" },
+        { key: "LeftButtonSMA", value: "LeftButtonSMA" },
+        { key: "LeftRollLeft", value: "LeftRollLeft" },
+        { key: "LeftRollRight", value: "LeftRollRight" },
+        { key: "LeftAccelX", value: "LeftAccelX" },
+        { key: "LeftAccelY", value: "LeftAccelY" },
+        { key: "LeftGyroX", value: "LeftGyroX" },
+        { key: "LeftGyroY", value: "LeftGyroY" },
+        { key: "irmode", value: "irmode" },
+        { key: "UsersAllowedList", value: "UsersAllowedList" },
+        { key: "sleeptime", value: "sleeptime" },
+        { key: "KeyboardMouseDriverType", value: "KeyboardMouseDriverType" },
+        { key: "MouseMoveX", value: "MouseMoveX" },
+        { key: "MouseMoveY", value: "MouseMoveY" },
+        { key: "MouseAbsX", value: "MouseAbsX" },
+        { key: "MouseAbsY", value: "MouseAbsY" },
+        { key: "MouseDesktopX", value: "MouseDesktopX" },
+        { key: "MouseDesktopY", value: "MouseDesktopY" },
+        { key: "SendLeftClick", value: "SendLeftClick" },
+        { key: "SendRightClick", value: "SendRightClick" },
+        { key: "SendMiddleClick", value: "SendMiddleClick" },
+        { key: "SendWheelUp", value: "SendWheelUp" },
+        { key: "SendWheelDown", value: "SendWheelDown" },
+        { key: "SendLeft", value: "SendLeft" },
+        { key: "SendRight", value: "SendRight" },
+        { key: "SendUp", value: "SendUp" },
+        { key: "SendDown", value: "SendDown" },
+        { key: "SendLButton", value: "SendLButton" },
+        { key: "SendRButton", value: "SendRButton" },
+        { key: "SendCancel", value: "SendCancel" },
+        { key: "SendMBUTTON", value: "SendMBUTTON" },
+        { key: "SendXBUTTON1", value: "SendXBUTTON1" },
+        { key: "SendXBUTTON2", value: "SendXBUTTON2" },
+        { key: "SendBack", value: "SendBack" },
+        { key: "SendTab", value: "SendTab" },
+        { key: "SendClear", value: "SendClear" },
+        { key: "SendReturn", value: "SendReturn" },
+        { key: "SendSHIFT", value: "SendSHIFT" },
+        { key: "SendCONTROL", value: "SendCONTROL" },
+        { key: "SendMENU", value: "SendMENU" },
+        { key: "SendPAUSE", value: "SendPAUSE" },
+        { key: "SendCAPITAL", value: "SendCAPITAL" },
+        { key: "SendKANA", value: "SendKANA" },
+        { key: "SendHANGEUL", value: "SendHANGEUL" },
+        { key: "SendHANGUL", value: "SendHANGUL" },
+        { key: "SendJUNJA", value: "SendJUNJA" },
+        { key: "SendFINAL", value: "SendFINAL" },
+        { key: "SendHANJA", value: "SendHANJA" },
+        { key: "SendKANJI", value: "SendKANJI" },
+        { key: "SendEscape", value: "SendEscape" },
+        { key: "SendCONVERT", value: "SendCONVERT" },
+        { key: "SendNONCONVERT", value: "SendNONCONVERT" },
+        { key: "SendACCEPT", value: "SendACCEPT" },
+        { key: "SendMODECHANGE", value: "SendMODECHANGE" },
+        { key: "SendSpace", value: "SendSpace" },
+        { key: "SendPRIOR", value: "SendPRIOR" },
+        { key: "SendNEXT", value: "SendNEXT" },
+        { key: "SendEND", value: "SendEND" },
+        { key: "SendHOME", value: "SendHOME" },
+        { key: "SendLEFT", value: "SendLEFT" },
+        { key: "SendUP", value: "SendUP" },
+        { key: "SendRIGHT", value: "SendRIGHT" },
+        { key: "SendDOWN", value: "SendDOWN" },
+        { key: "SendSELECT", value: "SendSELECT" },
+        { key: "SendPRINT", value: "SendPRINT" },
+        { key: "SendEXECUTE", value: "SendEXECUTE" },
+        { key: "SendSNAPSHOT", value: "SendSNAPSHOT" },
+        { key: "SendINSERT", value: "SendINSERT" },
+        { key: "SendDELETE", value: "SendDELETE" },
+        { key: "SendHELP", value: "SendHELP" },
+        { key: "SendAPOSTROPHE", value: "SendAPOSTROPHE" },
+        { key: "Send0", value: "Send0" },
+        { key: "Send1", value: "Send1" },
+        { key: "Send2", value: "Send2" },
+        { key: "Send3", value: "Send3" },
+        { key: "Send4", value: "Send4" },
+        { key: "Send5", value: "Send5" },
+        { key: "Send6", value: "Send6" },
+        { key: "Send7", value: "Send7" },
+        { key: "Send8", value: "Send8" },
+        { key: "Send9", value: "Send9" },
+        { key: "SendA", value: "SendA" },
+        { key: "SendB", value: "SendB" },
+        { key: "SendC", value: "SendC" },
+        { key: "SendD", value: "SendD" },
+        { key: "SendE", value: "SendE" },
+        { key: "SendF", value: "SendF" },
+        { key: "SendG", value: "SendG" },
+        { key: "SendH", value: "SendH" },
+        { key: "SendI", value: "SendI" },
+        { key: "SendJ", value: "SendJ" },
+        { key: "SendK", value: "SendK" },
+        { key: "SendL", value: "SendL" },
+        { key: "SendM", value: "SendM" },
+        { key: "SendN", value: "SendN" },
+        { key: "SendO", value: "SendO" },
+        { key: "SendP", value: "SendP" },
+        { key: "SendQ", value: "SendQ" },
+        { key: "SendR", value: "SendR" },
+        { key: "SendS", value: "SendS" },
+        { key: "SendT", value: "SendT" },
+        { key: "SendU", value: "SendU" },
+        { key: "SendV", value: "SendV" },
+        { key: "SendW", value: "SendW" },
+        { key: "SendX", value: "SendX" },
+        { key: "SendY", value: "SendY" },
+        { key: "SendZ", value: "SendZ" },
+        { key: "SendLWIN", value: "SendLWIN" },
+        { key: "SendRWIN", value: "SendRWIN" },
+        { key: "SendAPPS", value: "SendAPPS" },
+        { key: "SendSLEEP", value: "SendSLEEP" },
+        { key: "SendNUMPAD0", value: "SendNUMPAD0" },
+        { key: "SendNUMPAD1", value: "SendNUMPAD1" },
+        { key: "SendNUMPAD2", value: "SendNUMPAD2" },
+        { key: "SendNUMPAD3", value: "SendNUMPAD3" },
+        { key: "SendNUMPAD4", value: "SendNUMPAD4" },
+        { key: "SendNUMPAD5", value: "SendNUMPAD5" },
+        { key: "SendNUMPAD6", value: "SendNUMPAD6" },
+        { key: "SendNUMPAD7", value: "SendNUMPAD7" },
+        { key: "SendNUMPAD8", value: "SendNUMPAD8" },
+        { key: "SendNUMPAD9", value: "SendNUMPAD9" },
+        { key: "SendMULTIPLY", value: "SendMULTIPLY" },
+        { key: "SendADD", value: "SendADD" },
+        { key: "SendSEPARATOR", value: "SendSEPARATOR" },
+        { key: "SendSUBTRACT", value: "SendSUBTRACT" },
+        { key: "SendDECIMAL", value: "SendDECIMAL" },
+        { key: "SendDIVIDE", value: "SendDIVIDE" },
+        { key: "SendF1", value: "SendF1" },
+        { key: "SendF2", value: "SendF2" },
+        { key: "SendF3", value: "SendF3" },
+        { key: "SendF4", value: "SendF4" },
+        { key: "SendF5", value: "SendF5" },
+        { key: "SendF6", value: "SendF6" },
+        { key: "SendF7", value: "SendF7" },
+        { key: "SendF8", value: "SendF8" },
+        { key: "SendF9", value: "SendF9" },
+        { key: "SendF10", value: "SendF10" },
+        { key: "SendF11", value: "SendF11" },
+        { key: "SendF12", value: "SendF12" },
+        { key: "SendF13", value: "SendF13" },
+        { key: "SendF14", value: "SendF14" },
+        { key: "SendF15", value: "SendF15" },
+        { key: "SendF16", value: "SendF16" },
+        { key: "SendF17", value: "SendF17" },
+        { key: "SendF18", value: "SendF18" },
+        { key: "SendF19", value: "SendF19" },
+        { key: "SendF20", value: "SendF20" },
+        { key: "SendF21", value: "SendF21" },
+        { key: "SendF22", value: "SendF22" },
+        { key: "SendF23", value: "SendF23" },
+        { key: "SendF24", value: "SendF24" },
+        { key: "SendNUMLOCK", value: "SendNUMLOCK" },
+        { key: "SendSCROLL", value: "SendSCROLL" },
+        { key: "SendLeftShift", value: "SendLeftShift" },
+        { key: "SendRightShift", value: "SendRightShift" },
+        { key: "SendLeftControl", value: "SendLeftControl" },
+        { key: "SendRightControl", value: "SendRightControl" },
+        { key: "SendLMENU", value: "SendLMENU" },
+        { key: "SendRMENU", value: "SendRMENU" },
+        { key: "back", value: "back" },
+        { key: "start", value: "start" },
+        { key: "A", value: "A" },
+        { key: "B", value: "B" },
+        { key: "X", value: "X" },
+        { key: "Y", value: "Y" },
+        { key: "up", value: "up" },
+        { key: "left", value: "left" },
+        { key: "down", value: "down" },
+        { key: "right", value: "right" },
+        { key: "leftstick", value: "leftstick" },
+        { key: "rightstick", value: "rightstick" },
+        { key: "leftbumper", value: "leftbumper" },
+        { key: "rightbumper", value: "rightbumper" },
+        { key: "lefttrigger", value: "lefttrigger" },
+        { key: "righttrigger", value: "righttrigger" },
+        { key: "leftstickx", value: "leftstickx" },
+        { key: "leftsticky", value: "leftsticky" },
+        { key: "rightstickx", value: "rightstickx" },
+        { key: "rightsticky", value: "rightsticky" },
+        { key: "centery", value: "centery" }
+        ],
+        selectTemplate: function(item) {
+        if (typeof item === "undefined") return null;
+        if (this.range.isContentEditable(this.current.element)) {
+	var coloreditem = '';
+	if (outputs.indexOf(item.original.key) > -1) {
+	coloreditem = '<font color="orange">' + item.original.key + '</font><font color="white"></font>';
+	}
+	if (inputs.indexOf(item.original.key) > -1) {
+	coloreditem = '<font color="#1E90FF">' + item.original.key + '</font><font color="white"></font>';
+	}
+	if (ponctuations.indexOf(item.original.key) > -1) {
+	coloreditem = '<font color="white">' + item.original.key + '</font><font color="white"></font>';
+	}
+        return coloreditem;
+        }
+        return item.original.value;
+        },
+        menuItemTemplate: function(item) {
+        return item.string;
+        }
+        };
+        var tributeAutocompleteTest = new Tribute(
+        Object.assign(
+        {
+        menuContainer: document.getElementById(
+        "test-autocomplete-container"
+        )
+        },
+        tributeAttributes
+        )
+        );
+
+        var tributeAutocompleteTestArea = new Tribute(
+        Object.assign(
+        {
+        menuContainer: document.getElementById(
+        "test-autocomplete-textarea-container"
+        )
+        },
+        tributeAttributes
+        )
+        );
+        tributeAutocompleteTestArea.attach(
+        document.getElementById("test-autocomplete-textarea")
+        );
+    </script>
+
+    <div id="pad"></div>
+    <script>
+    var buttonMap = {
+            a: 0,
+            b: 0,
+            x: 0,
+            y: 0,
+            lb: 0,
+            rb: 0,
+            lt: 0,
+            rt: 0,
+            map: 0,
+            menu: 0,
+            lstick: 0,
+            rstick: 0,
+            du: 0,
+            dd: 0,
+            dl: 0,
+            dr: 0,
+            xbox: 0
+        };
+    var axisMap = { lx: 0, ly: 0, rx: 0, rx: 0 };
+        (function (l, r) {
+    if (l.getElementById("livereloadscript")) return;
+    r = l.createElement("script");
+    r.async = 1;
+    r.src =
+        "//" +
+        (window.location.host || "localhost").split(":")[0] +
+        ":35730/livereload.js?snipver=1";
+    r.id = "livereloadscript";
+    l.getElementsByTagName("head")[0].appendChild(r);
+})(window.document);
+(function (global, factory) {
+    typeof exports === "object" && typeof module !== "undefined"
+        ? (module.exports = factory())
+        : typeof define === "function" && define.amd
+        ? define(factory)
+        : ((global =
+              typeof globalThis !== "undefined" ? globalThis : global || self),
+          (global.GameController = factory()));
+})(this, function () {
+    "use strict";
+
+    function noop() {}
+    function add_location(element, file, line, column, char) {
+        element.__svelte_meta = {
+            loc: { file, line, column, char }
+        };
+    }
+    function run(fn) {
+        return fn();
+    }
+    function blank_object() {
+        return Object.create(null);
+    }
+    function run_all(fns) {
+        fns.forEach(run);
+    }
+    function is_function(thing) {
+        return typeof thing === "function";
+    }
+    function safe_not_equal(a, b) {
+        return a != a
+            ? b == b
+            : a !== b ||
+                  (a && typeof a === "object") ||
+                  typeof a === "function";
+    }
+    function is_empty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
+    function append(target, node) {
+        target.appendChild(node);
+    }
+    function insert(target, node, anchor) {
+        target.insertBefore(node, anchor || null);
+    }
+    function detach(node) {
+        node.parentNode.removeChild(node);
+    }
+    function element(name) {
+        return document.createElement(name);
+    }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text(" ");
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function attr(node, attribute, value) {
+        if (value == null) node.removeAttribute(attribute);
+        else if (node.getAttribute(attribute) !== value)
+            node.setAttribute(attribute, value);
+    }
+    function children(element) {
+        return Array.from(element.childNodes);
+    }
+    function set_style(node, key, value, important) {
+        node.style.setProperty(key, value, important ? "important" : "");
+    }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? "add" : "remove"](name);
+    }
+    function custom_event(type, detail) {
+        const e = document.createEvent("CustomEvent");
+        e.initCustomEvent(type, false, false, detail);
+        return e;
+    }
+
+    let current_component;
+    function set_current_component(component) {
+        current_component = component;
+    }
+
+    const dirty_components = [];
+    const binding_callbacks = [];
+    const render_callbacks = [];
+    const flush_callbacks = [];
+    const resolved_promise = Promise.resolve();
+    let update_scheduled = false;
+    function schedule_update() {
+        if (!update_scheduled) {
+            update_scheduled = true;
+            resolved_promise.then(flush);
+        }
+    }
+    function add_render_callback(fn) {
+        render_callbacks.push(fn);
+    }
+    let flushing = false;
+    const seen_callbacks = new Set();
+    function flush() {
+        if (flushing) return;
+        flushing = true;
+        do {
+            // first, call beforeUpdate functions
+            // and update components
+            for (let i = 0; i < dirty_components.length; i += 1) {
+                const component = dirty_components[i];
+                set_current_component(component);
+                update(component.$$);
+            }
+            dirty_components.length = 0;
+            while (binding_callbacks.length) binding_callbacks.pop()();
+            // then, once components are updated, call
+            // afterUpdate functions. This may cause
+            // subsequent updates...
+            for (let i = 0; i < render_callbacks.length; i += 1) {
+                const callback = render_callbacks[i];
+                if (!seen_callbacks.has(callback)) {
+                    // ...so guard against infinite loops
+                    seen_callbacks.add(callback);
+                    callback();
+                }
+            }
+            render_callbacks.length = 0;
+        } while (dirty_components.length);
+        while (flush_callbacks.length) {
+            flush_callbacks.pop()();
+        }
+        update_scheduled = false;
+        flushing = false;
+        seen_callbacks.clear();
+    }
+    function update($$) {
+        if ($$.fragment !== null) {
+            $$.update();
+            run_all($$.before_update);
+            const dirty = $$.dirty;
+            $$.dirty = [-1];
+            $$.fragment && $$.fragment.p($$.ctx, dirty);
+            $$.after_update.forEach(add_render_callback);
+        }
+    }
+    const outroing = new Set();
+    function transition_in(block, local) {
+        if (block && block.i) {
+            outroing.delete(block);
+            block.i(local);
+        }
+    }
+    function mount_component(component, target, anchor) {
+        const { fragment, on_mount, on_destroy, after_update } = component.$$;
+        fragment && fragment.m(target, anchor);
+        // onMount happens before the initial afterUpdate
+        add_render_callback(() => {
+            const new_on_destroy = on_mount.map(run).filter(is_function);
+            if (on_destroy) {
+                on_destroy.push(...new_on_destroy);
+            } else {
+                // Edge case - component was destroyed immediately,
+                // most likely as a result of a binding initialising
+                run_all(new_on_destroy);
+            }
+            component.$$.on_mount = [];
+        });
+        after_update.forEach(add_render_callback);
+    }
+    function destroy_component(component, detaching) {
+        const $$ = component.$$;
+        if ($$.fragment !== null) {
+            run_all($$.on_destroy);
+            $$.fragment && $$.fragment.d(detaching);
+            // TODO null out other refs, including component.$$ (but need to
+            // preserve final state?)
+            $$.on_destroy = $$.fragment = null;
+            $$.ctx = [];
+        }
+    }
+    function make_dirty(component, i) {
+        if (component.$$.dirty[0] === -1) {
+            dirty_components.push(component);
+            schedule_update();
+            component.$$.dirty.fill(0);
+        }
+        component.$$.dirty[(i / 31) | 0] |= 1 << i % 31;
+    }
+    function init(
+        component,
+        options,
+        instance,
+        create_fragment,
+        not_equal,
+        props,
+        dirty = [-1]
+    ) {
+        const parent_component = current_component;
+        set_current_component(component);
+        const prop_values = options.props || {};
+        const $$ = (component.$$ = {
+            fragment: null,
+            ctx: null,
+            // state
+            props,
+            update: noop,
+            not_equal,
+            bound: blank_object(),
+            // lifecycle
+            on_mount: [],
+            on_destroy: [],
+            before_update: [],
+            after_update: [],
+            context: new Map(
+                parent_component ? parent_component.$$.context : []
+            ),
+            // everything else
+            callbacks: blank_object(),
+            dirty,
+            skip_bound: false
+        });
+        let ready = false;
+        $$.ctx = instance
+            ? instance(component, prop_values, (i, ret, ...rest) => {
+                  const value = rest.length ? rest[0] : ret;
+                  if ($$.ctx && not_equal($$.ctx[i], ($$.ctx[i] = value))) {
+                      if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
+                      if (ready) make_dirty(component, i);
+                  }
+                  return ret;
+              })
+            : [];
+        $$.update();
+        ready = true;
+        run_all($$.before_update);
+        // `false` as a special case of no DOM component
+        $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+        if (options.target) {
+            if (options.hydrate) {
+                const nodes = children(options.target);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.l(nodes);
+                nodes.forEach(detach);
+            } else {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.c();
+            }
+            if (options.intro) transition_in(component.$$.fragment);
+            mount_component(component, options.target, options.anchor);
+            flush();
+        }
+        set_current_component(parent_component);
+    }
+    class SvelteComponent {
+        $destroy() {
+            destroy_component(this, 1);
+            this.$destroy = noop;
+        }
+        $on(type, callback) {
+            const callbacks =
+                this.$$.callbacks[type] || (this.$$.callbacks[type] = []);
+            callbacks.push(callback);
+            return () => {
+                const index = callbacks.indexOf(callback);
+                if (index !== -1) callbacks.splice(index, 1);
+            };
+        }
+        $set($$props) {
+            if (this.$$set && !is_empty($$props)) {
+                this.$$.skip_bound = true;
+                this.$$set($$props);
+                this.$$.skip_bound = false;
+            }
+        }
+    }
+
+    function dispatch_dev(type, detail) {
+        document.dispatchEvent(
+            custom_event(type, Object.assign({ version: "3.24.1" }, detail))
+        );
+    }
+    function append_dev(target, node) {
+        dispatch_dev("SvelteDOMInsert", { target, node });
+        append(target, node);
+    }
+    function insert_dev(target, node, anchor) {
+        dispatch_dev("SvelteDOMInsert", { target, node, anchor });
+        insert(target, node, anchor);
+    }
+    function detach_dev(node) {
+        dispatch_dev("SvelteDOMRemove", { node });
+        detach(node);
+    }
+    function listen_dev(
+        node,
+        event,
+        handler,
+        options,
+        has_prevent_default,
+        has_stop_propagation
+    ) {
+        const modifiers =
+            options === true
+                ? ["capture"]
+                : options
+                ? Array.from(Object.keys(options))
+                : [];
+        if (has_prevent_default) modifiers.push("preventDefault");
+        if (has_stop_propagation) modifiers.push("stopPropagation");
+        dispatch_dev("SvelteDOMAddEventListener", {
+            node,
+            event,
+            handler,
+            modifiers
+        });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev("SvelteDOMRemoveEventListener", {
+                node,
+                event,
+                handler,
+                modifiers
+            });
+            dispose();
+        };
+    }
+    function attr_dev(node, attribute, value) {
+        attr(node, attribute, value);
+        if (value == null)
+            dispatch_dev("SvelteDOMRemoveAttribute", { node, attribute });
+        else dispatch_dev("SvelteDOMSetAttribute", { node, attribute, value });
+    }
+    function validate_slots(name, slot, keys) {
+        for (const slot_key of Object.keys(slot)) {
+            if (!~keys.indexOf(slot_key)) {
+                console.warn(
+                    `<${name}> received an unexpected slot "${slot_key}".`
+                );
+            }
+        }
+    }
+    class SvelteComponentDev extends SvelteComponent {
+        constructor(options) {
+            if (!options || (!options.target && !options.$$inline)) {
+                throw new Error(`'target' is a required option`);
+            }
+            super();
+        }
+        $destroy() {
+            super.$destroy();
+            this.$destroy = () => {
+                console.warn(`Component was already destroyed`); // eslint-disable-line no-console
+            };
+        }
+        $capture_state() {}
+        $inject_state() {}
+    }
+
+    /* src/Controller.svelte generated by Svelte v3.24.1 */
+
+    const file = "src/Controller.svelte";
+
+    function create_fragment(ctx) {
+        let section;
+        let div0;
+        let t0;
+        let div2;
+        let div1;
+        let t1;
+        let div4;
+        let div3;
+        let t2;
+        let button0;
+        let t3;
+        let button1;
+        let t4;
+        let button2;
+        let t5;
+        let button3;
+        let t6;
+        let button4;
+        let t7;
+        let button5;
+        let t8;
+        let button6;
+        let t9;
+        let button7;
+        let t10;
+        let button8;
+        let t11;
+        let button9;
+        let t12;
+        let button10;
+        let t13;
+        let button11;
+        let t14;
+        let button12;
+        let t15;
+        let button13;
+        let button13_style_value;
+        let t16;
+        let button14;
+        let button14_style_value;
+        let mounted;
+        let dispose;
+
+        const block = {
+            c: function create() {
+                section = element("section");
+                div0 = element("div");
+                t0 = space();
+                div2 = element("div");
+                div1 = element("div");
+                t1 = space();
+                div4 = element("div");
+                div3 = element("div");
+                t2 = space();
+                button0 = element("button");
+                t3 = space();
+                button1 = element("button");
+                t4 = space();
+                button2 = element("button");
+                t5 = space();
+                button3 = element("button");
+                t6 = space();
+                button4 = element("button");
+                t7 = space();
+                button5 = element("button");
+                t8 = space();
+                button6 = element("button");
+                t9 = space();
+                button7 = element("button");
+                t10 = space();
+                button8 = element("button");
+                t11 = space();
+                button9 = element("button");
+                t12 = space();
+                button10 = element("button");
+                t13 = space();
+                button11 = element("button");
+                t14 = space();
+                button12 = element("button");
+                t15 = space();
+                button13 = element("button");
+                t16 = space();
+                button14 = element("button");
+                attr_dev(div0, "class", "pad svelte-1xis06h");
+                add_location(div0, file, 94, 1, 1831);
+                attr_dev(div1, "class", "stick svelte-1xis06h");
+                set_style(div1, "transform", /*stickl*/ ctx[1]());
+                toggle_class(div1, "click", /*buttonMap*/ ctx[0].lstick);
+                add_location(div1, file, 96, 2, 1882);
+                attr_dev(div2, "class", "well left svelte-1xis06h");
+                add_location(div2, file, 95, 1, 1856);
+                attr_dev(div3, "class", "stick svelte-1xis06h");
+                set_style(div3, "transform", /*stickr*/ ctx[2]());
+                toggle_class(div3, "click", /*buttonMap*/ ctx[0].rstick);
+                add_location(div3, file, 99, 2, 2006);
+                attr_dev(div4, "class", "well right svelte-1xis06h");
+                add_location(div4, file, 98, 1, 1979);
+                attr_dev(button0, "class", "button a svelte-1xis06h");
+                toggle_class(button0, "on", /*buttonMap*/ ctx[0].a);
+                add_location(button0, file, 101, 1, 2103);
+                attr_dev(button1, "class", "button b svelte-1xis06h");
+                toggle_class(button1, "on", /*buttonMap*/ ctx[0].b);
+                add_location(button1, file, 102, 1, 2162);
+                attr_dev(button2, "class", "button x svelte-1xis06h");
+                toggle_class(button2, "on", /*buttonMap*/ ctx[0].x);
+                add_location(button2, file, 103, 1, 2221);
+                attr_dev(button3, "class", "button y svelte-1xis06h");
+                toggle_class(button3, "on", /*buttonMap*/ ctx[0].y);
+                add_location(button3, file, 104, 1, 2280);
+                attr_dev(button4, "class", "button map svelte-1xis06h");
+                toggle_class(button4, "on", /*buttonMap*/ ctx[0].map);
+                add_location(button4, file, 105, 1, 2339);
+                attr_dev(button5, "class", "button menu svelte-1xis06h");
+                toggle_class(button5, "on", /*buttonMap*/ ctx[0].menu);
+                add_location(button5, file, 106, 1, 2402);
+                attr_dev(button6, "class", "button xbox svelte-1xis06h");
+                toggle_class(button6, "on", /*buttonMap*/ ctx[0].xbox);
+                add_location(button6, file, 107, 1, 2467);
+                attr_dev(button7, "class", "dpad du svelte-1xis06h");
+                toggle_class(button7, "on", /*buttonMap*/ ctx[0].du);
+                add_location(button7, file, 108, 1, 2532);
+                attr_dev(button8, "class", "dpad dr svelte-1xis06h");
+                toggle_class(button8, "on", /*buttonMap*/ ctx[0].dr);
+                add_location(button8, file, 109, 1, 2591);
+                attr_dev(button9, "class", "dpad dd svelte-1xis06h");
+                toggle_class(button9, "on", /*buttonMap*/ ctx[0].dd);
+                add_location(button9, file, 110, 1, 2650);
+                attr_dev(button10, "class", "dpad dl svelte-1xis06h");
+                toggle_class(button10, "on", /*buttonMap*/ ctx[0].dl);
+                add_location(button10, file, 111, 1, 2709);
+                attr_dev(button11, "class", "bumper left svelte-1xis06h");
+                toggle_class(button11, "on", /*buttonMap*/ ctx[0].lb);
+                add_location(button11, file, 112, 1, 2768);
+                attr_dev(button12, "class", "bumper right svelte-1xis06h");
+                toggle_class(button12, "on", /*buttonMap*/ ctx[0].rb);
+                add_location(button12, file, 113, 1, 2831);
+                attr_dev(button13, "class", "trigger left svelte-1xis06h");
+                attr_dev(
+                    button13,
+                    "style",
+                    (button13_style_value = /*trigger*/ ctx[3]("lt"))
+                );
+                add_location(button13, file, 114, 1, 2895);
+                attr_dev(button14, "class", "trigger right svelte-1xis06h");
+                attr_dev(
+                    button14,
+                    "style",
+                    (button14_style_value = /*trigger*/ ctx[3]("rt"))
+                );
+                add_location(button14, file, 115, 1, 2959);
+                attr_dev(section, "class", "controller svelte-1xis06h");
+                add_location(section, file, 93, 0, 1801);
+            },
+            l: function claim(nodes) {
+                throw new Error(
+                    "options.hydrate only works if the component was compiled with the `hydratable: true` option"
+                );
+            },
+            m: function mount(target, anchor) {
+                insert_dev(target, section, anchor);
+                append_dev(section, div0);
+                append_dev(section, t0);
+                append_dev(section, div2);
+                append_dev(div2, div1);
+                append_dev(section, t1);
+                append_dev(section, div4);
+                append_dev(div4, div3);
+                append_dev(section, t2);
+                append_dev(section, button0);
+                append_dev(section, t3);
+                append_dev(section, button1);
+                append_dev(section, t4);
+                append_dev(section, button2);
+                append_dev(section, t5);
+                append_dev(section, button3);
+                append_dev(section, t6);
+                append_dev(section, button4);
+                append_dev(section, t7);
+                append_dev(section, button5);
+                append_dev(section, t8);
+                append_dev(section, button6);
+                append_dev(section, t9);
+                append_dev(section, button7);
+                append_dev(section, t10);
+                append_dev(section, button8);
+                append_dev(section, t11);
+                append_dev(section, button9);
+                append_dev(section, t12);
+                append_dev(section, button10);
+                append_dev(section, t13);
+                append_dev(section, button11);
+                append_dev(section, t14);
+                append_dev(section, button12);
+                append_dev(section, t15);
+                append_dev(section, button13);
+                append_dev(section, t16);
+                append_dev(section, button14);
+
+                if (!mounted) {
+                    dispose = [
+                        listen_dev(
+                            window,
+                            "gamepadconnected",
+                            /*plugIn*/ ctx[4],
+                            false,
+                            false,
+                            false
+                        ),
+                        listen_dev(
+                            window,
+                            "gamepaddisconnected",
+                            /*unPlug*/ ctx[5],
+                            false,
+                            false,
+                            false
+                        )
+                    ];
+
+                    mounted = true;
+                }
+            },
+            p: function update(ctx, [dirty]) {
+                if (dirty & /*stickl*/ 2) {
+                    set_style(div1, "transform", /*stickl*/ ctx[1]());
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(div1, "click", /*buttonMap*/ ctx[0].lstick);
+                }
+
+                if (dirty & /*stickr*/ 4) {
+                    set_style(div3, "transform", /*stickr*/ ctx[2]());
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(div3, "click", /*buttonMap*/ ctx[0].rstick);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button0, "on", /*buttonMap*/ ctx[0].a);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button1, "on", /*buttonMap*/ ctx[0].b);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button2, "on", /*buttonMap*/ ctx[0].x);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button3, "on", /*buttonMap*/ ctx[0].y);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button4, "on", /*buttonMap*/ ctx[0].map);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button5, "on", /*buttonMap*/ ctx[0].menu);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button6, "on", /*buttonMap*/ ctx[0].xbox);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button7, "on", /*buttonMap*/ ctx[0].du);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button8, "on", /*buttonMap*/ ctx[0].dr);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button9, "on", /*buttonMap*/ ctx[0].dd);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button10, "on", /*buttonMap*/ ctx[0].dl);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button11, "on", /*buttonMap*/ ctx[0].lb);
+                }
+
+                if (dirty & /*buttonMap*/ 1) {
+                    toggle_class(button12, "on", /*buttonMap*/ ctx[0].rb);
+                }
+
+                if (
+                    dirty & /*trigger*/ 8 &&
+                    button13_style_value !==
+                        (button13_style_value = /*trigger*/ ctx[3]("lt"))
+                ) {
+                    attr_dev(button13, "style", button13_style_value);
+                }
+
+                if (
+                    dirty & /*trigger*/ 8 &&
+                    button14_style_value !==
+                        (button14_style_value = /*trigger*/ ctx[3]("rt"))
+                ) {
+                    attr_dev(button14, "style", button14_style_value);
+                }
+            },
+            i: noop,
+            o: noop,
+            d: function destroy(detaching) {
+                if (detaching) detach_dev(section);
+                mounted = false;
+                run_all(dispose);
+            }
+        };
+
+        dispatch_dev("SvelteRegisterBlock", {
+            block,
+            id: create_fragment.name,
+            type: "component",
+            source: "",
+            ctx
+        });
+
+        return block;
+    }
+    function instance($$self, $$props, $$invalidate) {
+        let poll;
+
+        buttonMap = {
+            a: 0,
+            b: 0,
+            x: 0,
+            y: 0,
+            lb: 0,
+            rb: 0,
+            lt: 0,
+            rt: 0,
+            map: 0,
+            menu: 0,
+            lstick: 0,
+            rstick: 0,
+            du: 0,
+            dd: 0,
+            dl: 0,
+            dr: 0,
+            xbox: 0
+        };
+
+        axisMap = { lx: 0, ly: 0, rx: 0, rx: 0 };
+
+        const plugIn = () => {
+            startController();
+        };
+
+        const unPlug = () => {
+            cancelAnimationFrame(poll);
+        };
+
+        const startController = () => {
+            const gamepads = navigator.getGamepads();
+
+            if (!gamepads) {
+                return;
+            }
+
+            const pad = gamepads[0];
+
+            const buttons = [
+                "a",
+                "b",
+                "x",
+                "y",
+                "lb",
+                "rb",
+                "lt",
+                "rt",
+                "map",
+                "menu",
+                "lstick",
+                "rstick",
+                "du",
+                "dd",
+                "dl",
+                "dr",
+                "xbox"
+            ];
+
+            const axes = ["lx", "ly", "rx", "ry"];
+
+            pad.buttons.forEach((button, i) => {
+                $$invalidate(
+                    0,
+                    (buttonMap[buttons[i]] = button.pressed ? button.value : 0),
+                    buttonMap
+                );
+            });
+
+            pad.axes.forEach((axis, i) => {
+                $$invalidate(
+                    7,
+                    (axisMap[axes[i]] =
+                        axis > 0.01 || axis < -0.01
+                            ? parseFloat(axis.toFixed(3))
+                            : 0),
+                    axisMap
+                );
+            });
+
+            poll = requestAnimationFrame(startController);
+        };
+
+        const writable_props = [];
+
+        Object.keys($$props).forEach((key) => {
+            if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$")
+                console.warn(
+                    `<Controller> was created with unknown prop '${key}'`
+                );
+        });
+
+        let { $$slots = {}, $$scope } = $$props;
+        validate_slots("Controller", $$slots, []);
+
+        $$self.$capture_state = () => ({
+            poll,
+            buttonMap,
+            axisMap,
+            plugIn,
+            unPlug,
+            startController,
+            stickl,
+            stickr,
+            trigger
+        });
+
+        $$self.$inject_state = ($$props) => {
+            if ("poll" in $$props) poll = $$props.poll;
+            if ("buttonMap" in $$props)
+                $$invalidate(0, (buttonMap = $$props.buttonMap));
+            if ("axisMap" in $$props)
+                $$invalidate(7, (axisMap = $$props.axisMap));
+            if ("stickl" in $$props) $$invalidate(1, (stickl = $$props.stickl));
+            if ("stickr" in $$props) $$invalidate(2, (stickr = $$props.stickr));
+            if ("trigger" in $$props)
+                $$invalidate(3, (trigger = $$props.trigger));
+        };
+
+        let stickl;
+        let stickr;
+        let trigger;
+
+        if ($$props && "$$inject" in $$props) {
+            $$self.$inject_state($$props.$$inject);
+        }
+
+        $$self.$$.update = () => {
+            if ($$self.$$.dirty & /*axisMap, buttonMap*/ 129) {
+                $$invalidate(
+                    1,
+                    (stickl = () => {
+                        let x = axisMap.lx * 25;
+                        let y = axisMap.ly * 25;
+                        let rx = axisMap.lx * 10;
+                        let ry = axisMap.ly * 10;
+                        let z = 1 - buttonMap.lstick * 0.05;
+                        return `translateX(${x}%) translateY(${y}%) rotateY(${rx}deg) rotateX(${ry}deg) scale(${z})`;
+                    })
+                );
+            }
+
+            if ($$self.$$.dirty & /*axisMap, buttonMap*/ 129) {
+                $$invalidate(
+                    2,
+                    (stickr = () => {
+                        let x = axisMap.rx * 25;
+                        let y = axisMap.ry * 25;
+                        let rx = axisMap.rx * 10;
+                        let ry = axisMap.ry * 10;
+                        let z = 1 - buttonMap.rstick * 0.05;
+                        return `translateX(${x}%) translateY(${y}%) rotateY(${rx}deg) rotateX(${ry}deg) scale(${z})`;
+                    })
+                );
+            }
+
+            if ($$self.$$.dirty & /*buttonMap*/ 1) {
+                $$invalidate(
+                    3,
+                    (trigger = (side) => {
+                        let s = buttonMap[side];
+                        let sx = side === "rt" ? -s : s;
+
+                        return `
+			transform: scaleX(${sx}) scaleY(${s}) rotate(-69deg);
+			opacity: ${0.3 + s};
+		`;
+                    })
+                );
+            }
+        };
+
+        return [buttonMap, stickl, stickr, trigger, plugIn, unPlug];
+    }
+
+    class Controller extends SvelteComponentDev {
+        constructor(options) {
+            super(options);
+            init(this, options, instance, create_fragment, safe_not_equal, {});
+
+            dispatch_dev("SvelteRegisterComponent", {
+                component: this,
+                tagName: "Controller",
+                options,
+                id: create_fragment.name
+            });
+        }
+    }
+
+    return Controller;
+});
+//# sourceMappingURL=bundle.js.map
+
+new GameController({
+    target: document.getElementById("pad")
+});
+
+setInterval(pushControllerData, 10);
+
+function pushControllerData() {
+	try {
+  		getController((buttonMap["a"]).toString(), (buttonMap["b"]).toString(), (buttonMap["x"]).toString(), (buttonMap["y"]).toString(), (buttonMap["lb"]).toString(), (buttonMap["rb"]).toString(), (buttonMap["lt"]).toString(), (buttonMap["rt"]).toString(), (buttonMap["map"]).toString(), (buttonMap["menu"]).toString(), (buttonMap["lstick"]).toString(), (buttonMap["rstick"]).toString(), (buttonMap["du"]).toString(), (buttonMap["dd"]).toString(), (buttonMap["dl"]).toString(), (buttonMap["dr"]).toString(), (buttonMap["xbox"]).toString(), (axisMap["lx"] * 1024).toString(), (axisMap["ly"] * 1024).toString(), (axisMap["rx"] * 1024).toString(), (axisMap["ry"] * 1024).toString());
+	}
+	catch { }
+}
+
+    </script>
+</body>
+</html>

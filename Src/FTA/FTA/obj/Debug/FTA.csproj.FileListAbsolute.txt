@@ -1,0 +1,17 @@
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\FTA.exe.config
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\FTA.exe
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\FTA.pdb
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\EO.Base.dll
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\EO.WebBrowser.dll
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\EO.WebEngine.dll
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\EO.Base.xml
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\EO.WebBrowser.xml
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\bin\Debug\EO.WebEngine.xml
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\obj\Debug\FTA.csprojAssemblyReference.cache
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\obj\Debug\FTA.Form1.resources
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\obj\Debug\FTA.Properties.Resources.resources
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\obj\Debug\FTA.csproj.GenerateResource.cache
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\obj\Debug\FTA.csproj.CoreCompileInputs.cache
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\obj\Debug\FTA.csproj.CopyComplete
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\obj\Debug\FTA.exe
+C:\Users\mic\Documents\GitHub\FTA\Src\FTA\FTA\obj\Debug\FTA.pdb

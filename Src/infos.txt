@@ -1,0 +1,151 @@
+Sales :
+- Page components updated, need to be encrypted with TextCryptor, to be loaded in FTA
+- Each time FTA is updated, replace file in the zip fta.zip in installer-FTA, zip Installer-FTA without auth.txt, update Installer-FTA.zip on fastspring
+- Create encrypted scripts, add it to fastspring, add allowed users who bought it, update it to fastspring, send to users who bought it
+- Each time a user buy, seen in fastspring or gmail, create auth.txt file with GetHashedChecksum with the name of the user and checksum of the file hashed, add to firestore database secureconnection the name of the user as new document in users collection, and create empty string field named uniqueid, and then send the file to the user, if the user redeem, delete the document with the name of the user, https://console.cloud.google.com/firestore/data/users/mic113b?project=secureconnection
+
+Supports :
+- Prefer a PC with bluetooth integrate because it's more powerfull, and so normally there isn't any weird latency
+- Press Win+R and type joy.cpl, and then press enter to test controller
+- The form scripts use setting files needing to set decimal instead of comma for number separator in regional advanced options under control panel
+- When you can choose to lower deadzone of gamepad from game options, set it to lowest values, it's better for vertical/horizontal flawless view control, but not for walk/run control
+- You can switch between two configurations with Wiimote Home and Down Buttons, but switch is enable only when Wiimote is connected alone or with one Joycon, and with driver type as controller only
+- To enable configuration change and input sendings, press Joycon Right Button DPAD_DOWN and Joycon Right Button HOME, or Joycon Left Button DPAD_DOWN and Joycon Left Button CAPTURE, or Wiimote Button Home and  Wiimote Button Two
+- The keyboardmouse settings for Fortnite are as following
+move = ZSQD
+jump = Space bar
+sprint = Left shift
+crouch = A
+fire = Left mouse button
+target = Right mouse button
+reload = R
+use = F
+harvesting tool = V
+weapon slot 1 = &
+weapon slot 2 = é
+weapon slot 3 = "
+weapon slot 4 = '
+weapon slot 5 = (
+wall = U
+Floor = C
+stairs = Y
+roof = X
+trap = P
+place building = Left mouse button
+change building material = Right mouse button
+building edit = E
+toggle map = Tab
+driver push = Space bar
+driver exit = A
+- The keyboardmouse settings for Call of Duty are as following
+move = ZSQD
+jump = Space bar
+sprint = Left shift
+fire = Left mouse button
+target = Right mouse button
+reload = R
+use = F
+cut = V
+toggle score / toggle map = Tab
+special equipement = A
+switch auto fire / shot per shot = Y
+armor = U
+tactical = T
+deadly = G
+lie down = Left Alt
+crouch = C
+switch weapon = X
+marker = Left Ctrl
+streaks = &, é, ", ', (
+- The xbox360controller settings for Fortnite use build speciality (not classic) mappings under controller game options
+- The xbox360controller settings for Call of Duty use default mappings under controller game options 
+- For playing 2 players using Joycons, if game is considering gamepads as third and fourth controllers, it's not playable, leave the game, like it's for Golazo
+- Entering the game mode of call of duty is required to enable gamepad
+- The forms scripts with WiiJoyXS can bind outputs from inputs known as :
+controller, or whatever for hid type,
+sendinput, kmevent, or interception for driver type,
+mWSButtonStateLR for Wiimote Left or Right, 
+mWSButtonStateMU for Wiimote Minus or Up,
+mWSButtonStatePU for Wiimote Plus or Up,
+mWSButtonStateHFront for Wiimote Home or to Front,
+mWSLeftButtonTC for Wiimote Two or Joycon Left Capture,
+LeftButtonSMA for Joycon Left SL, SR, Minus or Acceleration,
+RightButtonSPA for Joycon Right SL, SR, Plus or Acceleration,
+mWSButtonStateA,
+mWSButtonStateB,
+mWSButtonStateMinus,
+mWSButtonStateHome,
+mWSButtonStatePlus,
+mWSButtonStateOne,
+mWSButtonStateTwo,
+mWSButtonStateUp,
+mWSButtonStateDown,
+mWSButtonStateLeft,
+mWSButtonStateRight,
+mWSButtonStateFront,
+LeftButtonSHOULDER_1,
+LeftButtonSHOULDER_2,
+LeftButtonSR,
+LeftButtonSL,
+LeftButtonDPAD_DOWN,
+LeftButtonDPAD_RIGHT,
+LeftButtonDPAD_UP,
+LeftButtonDPAD_LEFT,
+LeftButtonMINUS,
+LeftButtonCAPTURE,
+LeftButtonSTICK,
+LeftButtonACC,
+LeftButtonStickRight,
+LeftButtonStickLeft,
+LeftButtonStickUp,
+LeftButtonStickDown,
+RightButtonSHOULDER_1,
+RightButtonSHOULDER_2,
+RightButtonSR,
+RightButtonSL,
+RightButtonDPAD_DOWN,
+RightButtonDPAD_RIGHT,
+RightButtonDPAD_UP,
+RightButtonDPAD_LEFT,
+RightButtonPLUS,
+RightButtonHOME,
+RightButtonSTICK,
+mWSRightButtonTH,
+RightButtonACC,
+RightButtonStickRight,
+RightButtonStickLeft,
+RightButtonStickUp,
+RightButtonStickDown,
+mWSNunchuckStateRollingLeft,
+mWSNunchuckStateRollingRight,
+mWSNunchuckStateRawValuesY,
+mWSNunchuckStateC,
+mWSNunchuckStateZ,
+mWSNunchuckStateStickRight,
+mWSNunchuckStateStickLeft,
+mWSNunchuckStateStickUp,
+mWSNunchuckStateStickDown,
+LeftRollLeft,
+LeftRollRight,
+RightRollLeft,
+RightRollRight,
+irx,
+iry,
+accx,
+accy,
+leftgyrox,
+leftgyroy,
+rightgyrox,
+rightgyroy,
+leftaccx,
+leftaccy,
+rightaccx,
+rightaccy,
+stickx,
+sticky,
+rightstickx,
+rightsticky,
+leftstickx,
+leftsticky,
+none
+

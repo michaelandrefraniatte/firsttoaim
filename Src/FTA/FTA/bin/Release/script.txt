@@ -1,0 +1,5 @@
+<font color="orange">SendW</font> = <font color="#1E90FF">WiimoteUp</font>;<br>
+<font color="orange">SendA</font> = <font color="#1E90FF">WiimoteLeft</font>;<br>
+<font color="orange">SendS</font> = <font color="#1E90FF">WiimoteDown</font>;<br>
+<font color="orange">SendD</font> = <font color="#1E90FF">WiimoteRight</font>;<br>
+<br>

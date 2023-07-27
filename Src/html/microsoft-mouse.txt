@@ -1,0 +1,788 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="author" content="Michael Haldeman">
+    <meta http-equiv="content-language" content="en">
+    <link href="file:///C:/Users/mic/Documents/GitHub/FTA/Src/html/microsoft-mouse.css" rel="stylesheet">
+    <style>
+
+        :root {
+            --animation_speed: 600ms;
+            --animation_delay: 200ms;
+        }
+
+        .jp-posts {
+            position: absolute;
+            overflow: hidden;
+            background-image: linear-gradient(55deg, rgba(208, 208, 208, 0.03) 0%, rgba(208, 208, 208, 0.03) 20%, rgba(55, 55, 55, 0.03) 20%, rgba(55, 55, 55, 0.03) 40%, rgba(81, 81, 81, 0.03) 40%, rgba(81, 81, 81, 0.03) 60%, rgba(208, 208, 208, 0.03) 60%, rgba(208, 208, 208, 0.03) 80%, rgba(191, 191, 191, 0.03) 80%, rgba(191, 191, 191, 0.03) 100%), linear-gradient(257deg, rgba(72, 72, 72, 0.03) 0%, rgba(72, 72, 72, 0.03) 16.667%, rgba(138, 138, 138, 0.03) 16.667%, rgba(138, 138, 138, 0.03) 33.334%, rgba(54, 54, 54, 0.03) 33.334%, rgba(54, 54, 54, 0.03) 50.001%, rgba(161, 161, 161, 0.03) 50.001%, rgba(161, 161, 161, 0.03) 66.668%, rgba(17, 17, 17, 0.03) 66.668%, rgba(17, 17, 17, 0.03) 83.335%, rgba(230, 230, 230, 0.03) 83.335%, rgba(230, 230, 230, 0.03) 100.002%), linear-gradient(47deg, rgba(191, 191, 191, 0.01) 0%, rgba(191, 191, 191, 0.01) 16.667%, rgba(27, 27, 27, 0.01) 16.667%, rgba(27, 27, 27, 0.01) 33.334%, rgba(66, 66, 66, 0.01) 33.334%, rgba(66, 66, 66, 0.01) 50.001%, rgba(36, 36, 36, 0.01) 50.001%, rgba(36, 36, 36, 0.01) 66.668%, rgba(230, 230, 230, 0.01) 66.668%, rgba(230, 230, 230, 0.01) 83.335%, rgba(93, 93, 93, 0.01) 83.335%, rgba(93, 93, 93, 0.01) 100.002%), linear-gradient(90deg, #F3F3F3, #F3F3F3);
+            padding: 4vw 0;
+        }
+
+        .jp-posts__wrap {
+            position: absolute;
+            transition: all var(--animation_speed) ease;
+        }
+
+        .jp-post {
+            position: absolute;
+            backface-visibility: hidden;
+            z-index: 1;
+            width: 100%;
+            padding: 0 calc(4vw + 2em);
+        }
+
+            .jp-post.-current {
+                transform: translateX(0);
+                z-index: 2;
+            }
+
+                .jp-post.-current.-moveleft {
+                    transform-origin: right center;
+                    animation: leave var(--animation_speed);
+                    opacity: 0;
+                }
+
+                .jp-post.-current.-moveright {
+                    transform-origin: left center;
+                    animation: leave var(--animation_speed);
+                    opacity: 0;
+                }
+
+            .jp-post.-hidden {
+                position: absolute;
+                top: 0;
+            }
+
+                .jp-post.-hidden.-moving {
+                    z-index: 3;
+                }
+
+                .jp-post.-hidden.-moveleft, .jp-post.-hidden.-moveright {
+                    transform: translateX(0);
+                }
+
+            .jp-post.-next {
+                transform: translateX(100vw);
+            }
+
+            .jp-post.-prev {
+                transform: translateX(-100vw);
+            }
+
+            .jp-post.-moving {
+                transition: all var(--animation_speed) cubic-bezier(0.165, 0.84, 0.44, 1) var(--animation_delay);
+            }
+
+                .jp-post.-moving.-current {
+                    transition: transform var(--animation_speed) cubic-bezier(0.94, 0.01, 1, 1.02), opacity var(--animation_speed) cubic-bezier(0.94, 0.01, 1, 1.02);
+                }
+
+        @keyframes leave {
+            0% {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scaleX(2);
+                opacity: 0;
+            }
+        }
+
+        .jp-post__image {
+            display: table;
+            margin: auto;
+        }
+
+        .jp-posts__nav {
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            background-color: lightgray;
+            color: white;
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 300ms ease;
+            z-index: 10;
+        }
+
+            .jp-posts__nav.-prev {
+                left: 1vw;
+                grid-area: prev;
+            }
+
+            .jp-posts__nav.-next {
+                grid-area: next;
+                right: 1vw;
+            }
+
+            .jp-posts__nav:hover {
+                box-shadow: 0 0 0 0.3em white, 0 0 0 0.5em #adddff;
+            }
+
+                .jp-posts__nav:hover:focus {
+                    box-shadow: 0 0 0 0.3em white, 0 0 0 0.5em #adddff;
+                }
+
+            .jp-posts__nav:focus {
+                box-shadow: 0 0 0 0.2em #adddff;
+                outline: none;
+            }
+
+        button {
+            font-size: 15px;
+        }
+    </style>
+    <style>
+        .ezoic-ad.box-2126 {
+            display: block !important;
+            float: none;
+            line-height: 0px;
+            margin-bottom: 30px !important;
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+            margin-top: 0px !important;
+            min-height: 90px;
+            min-width: 728px;
+            padding: 0;
+            text-align: center !important;
+        }
+
+        .ezoic-ad.box-3124 {
+            display: block !important;
+            float: none;
+            line-height: 0px;
+            margin-bottom: 30px !important;
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+            margin-top: 0px !important;
+            min-height: 250px;
+            min-width: 970px;
+            padding: 0;
+            text-align: center !important;
+        }
+
+        .ezoic-ad.medrectangle-3131 {
+            display: block !important;
+            float: none;
+            line-height: 0px;
+            margin-bottom: 30px !important;
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+            margin-top: 0px !important;
+            min-height: 90px;
+            min-width: 728px;
+            padding: 0;
+            text-align: center !important;
+        }
+
+        .ezoic-ad.large-leaderboard-2138 {
+            display: block !important;
+            float: none;
+            line-height: 0px;
+            margin-bottom: 15px !important;
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+            margin-top: 15px !important;
+            min-height: 90px;
+            min-width: 970px;
+            padding: 0;
+            text-align: center !important;
+        }
+
+        .ezoic-ad.leader-1161 {
+            display: block !important;
+            float: none;
+            line-height: 0px;
+            margin-bottom: 15px !important;
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+            margin-top: 15px !important;
+            min-height: 90px;
+            min-width: 970px;
+            padding: 0;
+            text-align: center !important;
+        }
+
+        .ezoic-ad.large-mobile-banner-1139 {
+            display: block !important;
+            float: none;
+            line-height: 0px;
+            margin-bottom: 15px !important;
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+            margin-top: 0px !important;
+            min-height: 90px;
+            min-width: 970px;
+            padding-bottom: 15px !important;
+            padding-top: 5px !important;
+            text-align: center !important;
+        }
+
+        .ezoic-ad {
+            display: inline-block;
+            border: 0px;
+        }
+
+            .ezoic-ad > div > iframe {
+                margin: 0px !important;
+                padding: 0px !important;
+            }
+
+        .adtester-container-185, .adtester-container-162, .adtester-container-163, .adtester-container-187, .adtester-container-145, .adtester-container-179, .adtester-container-147, .adtester-container-151, .adtester-container-100, .adtester-container-190, .adtester-container-144, .adtester-container-143, .adtester-container-191, .adtester-container-142, .adtester-container-164, .adtester-container-183, .adtester-container-152, .adtester-container-149, .adtester-container-155, .adtester-container-159, .adtester-container-137, .adtester-container-140, .adtester-container-154, .adtester-container-158, .adtester-container-186, .adtester-container-181, .adtester-container-160, .adtester-container-141, .adtester-container-182, .adtester-container-189, .adtester-container-150, .adtester-container-136, .adtester-container-192, .adtester-container-127, .adtester-container-146, .adtester-container-156, .adtester-container-153 {
+            display: none !important
+        }
+
+        .ezoic-floating-bottom {
+            display: none !important;
+        }
+    </style>
+    <style type="text/css">
+        #ez-cookie-dialog-wrapper {
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 auto !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            background-color: rgba(0,0,0,.5) !important;
+            font-family: Arial,serif !important;
+            z-index: 2000000000 !important;
+            overflow-y: auto !important
+        }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table-box {
+                overflow-y: auto !important;
+                max-height: 150px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .select-wrapper input, #ez-cookie-dialog-wrapper #ez-cookie-dialog .select-wrapper span, #ez-cookie-dialog-wrapper #ez-cookie-dialog .select-wrapper ul {
+                display: none !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog.ez_modal, #ez-cookie-dialog-wrapper #ez-cookie-dialog.modal {
+                display: block !important;
+                position: relative !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                margin: 30px auto 0 !important;
+                width: 650px !important;
+                -webkit-box-sizing: content-box !important;
+                -moz-box-sizing: content-box !important;
+                box-sizing: content-box !important;
+                max-width: 90% !important;
+                background: #ffffff !important;
+                padding: 12px 10px !important;
+                overflow: hidden !important;
+                z-index: 2000000000 !important;
+                border: 10px solid #5fa624 !important;
+                box-shadow: #333 1px 1px 10px 1px !important;
+                line-height: 1.2 !important;
+                text-align: left !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog.ez_banner {
+                display: block !important;
+                position: fixed !important;
+                bottom: 0;
+                opacity: 1 !important;
+                visibility: visible !important;
+                -webkit-box-sizing: content-box !important;
+                -moz-box-sizing: content-box !important;
+                box-sizing: content-box !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                background: #ffffff !important;
+                overflow-x: hidden !important;
+                overflow-y: scroll !important;
+                z-index: 2000000000 !important;
+                border-top: 10px solid #5fa624 !important;
+                box-shadow: #333 3px 0 0 0 !important;
+                line-height: 1.2 !important;
+                text-align: left !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog.ez_banner #ez-cmp-purposes, #ez-cookie-dialog-wrapper #ez-cookie-dialog.ez_banner #ez-cookie-form, #ez-cookie-dialog-wrapper #ez-cookie-dialog.ez_banner .ez-cmp-vendors {
+                    margin: 0 3% !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog h2 {
+                font-size: 20px !important;
+                line-height: 16px !important;
+                font-weight: 700 !important;
+                margin: 10px 0 16px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog p {
+                margin: 12px 0 !important;
+                line-height: 16px !important;
+                text-indent: 0 !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog button {
+                line-height: 16px !important;
+                text-transform: none !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog input, #ez-cookie-dialog-wrapper #ez-cookie-dialog select {
+                display: inline-block !important;
+                position: relative !important;
+                opacity: 1 !important;
+                margin: 3px !important;
+                font-size: 13px !important;
+                background-color: #ffffff !important;
+                width: initial !important;
+                padding: 0 !important;
+                border: 1px solid #000000 !important;
+                border-radius: 0 !important;
+                height: initial !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog a, #ez-cookie-dialog-wrapper #ez-cookie-dialog button, #ez-cookie-dialog-wrapper #ez-cookie-dialog h2, #ez-cookie-dialog-wrapper #ez-cookie-dialog p {
+                color: #000000 !important;
+                font-style: normal !important;
+                text-decoration: none !important;
+                font-variant: normal !important;
+                font-family: Arial,serif !important;
+                box-shadow: none !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-details-description, #ez-cookie-dialog-wrapper #ez-cookie-dialog button, #ez-cookie-dialog-wrapper #ez-cookie-dialog p {
+                font-weight: 400 !important;
+                font-size: 10pt !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog button {
+                margin-top: 10px
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-details-description {
+                padding: 10px 0 5px !important;
+                color: #333 !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-details {
+                height: 34px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-about-cookies, #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-details {
+                display: table-cell !important;
+                color: #5fa624 !important;
+                vertical-align: bottom !important;
+                position: relative !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-details:after {
+                    width: 0 !important;
+                    height: 0 !important;
+                    border-left: 4px solid transparent !important;
+                    border-right: 4px solid transparent !important;
+                    border-top: 4px solid #5fa624 !important;
+                    content: "" !important;
+                    position: absolute !important;
+                    right: -14px !important;
+                    bottom: 6px !important
+                }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-details.open:after {
+                    border-bottom: 4px solid #5fa624 !important;
+                    border-top: 0 solid transparent !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-about-cookies-text {
+                display: none !important;
+                margin-top: 12px !important;
+                text-align: left !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-switch-view-btn {
+                border: 1px solid #000000 !important;
+                font-family: Arial,serif !important;
+                color: #000000 !important;
+                background: #ffffff !important;
+                padding: 7px 10px !important;
+                text-decoration: none !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-switch-view-btn:hover {
+                    cursor: pointer !important;
+                    background: #ffffff !important;
+                    text-decoration: none !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-save-settings {
+                border: none !important;
+                font-family: Arial,serif !important;
+                color: #ffffff !important;
+                background: #000000 !important;
+                text-decoration: none !important;
+                padding: 7px 10px !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-save-settings:hover {
+                    cursor: pointer !important;
+                    background: #000000 !important;
+                    text-decoration: none !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-accept-necessary {
+                border: none !important;
+                font-family: Arial,serif !important;
+                color: #ffffff !important;
+                background: #000000 !important;
+                text-decoration: none !important;
+                padding: 7px 10px !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-accept-necessary:hover {
+                    cursor: pointer !important;
+                    background: #000000 !important;
+                    text-decoration: none !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-accept-all {
+                border: none !important;
+                font-family: Arial,serif !important;
+                color: #ffffff !important;
+                background: #5fa624 !important;
+                text-decoration: none !important;
+                padding: 7px 10px !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-accept-all:hover {
+                    cursor: pointer !important;
+                    background: #5fa624 !important;
+                    text-decoration: none !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #privacy-link {
+                font-size: 12px !important;
+                display: block !important;
+                margin-top: 20px !important;
+                text-decoration: underline !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-ok-cookies {
+                border: 1px solid #ffffff !important;
+                font-family: Arial,serif !important;
+                font-size: 9pt !important;
+                color: #000 !important;
+                background: #ffffff !important;
+                padding: 5px 15px !important;
+                text-decoration: none !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-ok-cookies:hover {
+                    cursor: pointer !important;
+                    background: #ffffff !important;
+                    text-decoration: none !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-about-cookies-container {
+                margin: 32px auto 12px !important;
+                width: 100% !important;
+                display: none !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog a {
+                color: #5fa624 !important;
+                text-decoration: none !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #privacy {
+                text-align: right !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-options {
+                display: flex !important;
+                flex-direction: row !important;
+                margin: 12px 0 !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-details-container {
+                display: none !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cookie-option {
+                flex: 1 !important;
+                font-family: Arial,serif !important;
+                font-size: 9pt !important;
+                display: block !important;
+                line-height: 26px !important;
+                color: #000000 !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cookie-option label {
+                    cursor: pointer !important;
+                    font-size: 12px !important;
+                    color: #000000 !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table {
+                max-width: 525px !important;
+                width: 525px !important;
+                margin-top: 12px !important;
+                font-family: Arial,serif !important;
+                border-spacing: 1px !important;
+                font-size: 8pt !important;
+                border-collapse: separate !important;
+                background-color: #ffffff !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table th {
+                    background-color: #ffffff !important;
+                    color: #333 !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #button-row {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                justify-content: space-between !important;
+                margin-right: 10px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #secondary-links {
+                display: flex !important;
+                font-size: 12px !important;
+                margin-top: 20px !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #secondary-links .bar {
+                    margin: 0 5px !important;
+                    width: auto !important;
+                    height: auto !important;
+                    position: relative !important;
+                    background: 0 0 !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table td {
+                background-color: #ffffff !important;
+                font-size: 8pt !important;
+                width: 30% !important;
+                -ms-word-break: break-word !important;
+                word-break: break-word !important;
+                color: #000000 !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table td:nth-child(1) {
+                    width: 30% !important
+                }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table td:nth-child(2) {
+                    width: 50% !important
+                }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table td:nth-child(3) {
+                    width: 20% !important
+                }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table td, #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table th {
+                text-align: left !important;
+                padding: 3px !important;
+                vertical-align: top !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cookie-option input {
+                vertical-align: middle !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-language {
+                position: absolute !important;
+                top: 10px !important;
+                right: 10px !important;
+                color: #000000 !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-header-row {
+                border: 1px solid #000000 !important;
+                background-color: #ffffff !important;
+                margin-bottom: 2px;
+                overflow: auto
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog h3 {
+                color: #000000 !important;
+                margin-bottom: 3px !important;
+                margin-top: 6px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-header-row .ez-cmp-header-left {
+                text-align: left !important;
+                float: left !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-header-row .ez-cmp-header-right {
+                text-align: right !important;
+                float: right !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-header-row label.ez-cmp-checkbox-label {
+                color: #000000 !important;
+                font-size: 10px !important;
+                display: inline-block !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-description {
+                color: #000000 !important;
+                font-size: 12px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-toggle-description {
+                margin-left: 5px !important;
+                margin-right: 5px !important;
+                font-weight: 700 !important;
+                cursor: pointer !important;
+                color: #5fa624 !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-visible-content-wrapper {
+                max-height: 400px !important;
+                overflow-y: scroll !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-description p {
+                margin: 2px 0 !important;
+                font-size: 11px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-purpose .ez-cmp-description ul {
+                margin: 2px 0 !important;
+                font-size: 11px !important;
+                color: #000000 !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-description h4 {
+                margin: 6px 0 3px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-description ul {
+                margin: 1px 0 !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-description {
+                margin: -2px 4px 2px 4px !important;
+                border: 1px solid #000000 !important;
+                border-top: 0 !important;
+                background-color: #ffffff !important;
+                padding: 3px !important
+            }
+
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog .ez-cmp-header-name {
+                color: #000000 !important;
+                padding-left: 3px !important
+            }
+
+        @media only screen and (max-width:600px) {
+            #ez-cookie-dialog-wrapper #ez-cookie-dialog {
+                margin-top: 5px !important;
+                width: 100% !important;
+                padding: 10px !important;
+                border-width: 5px !important
+            }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #button-row {
+                    flex-direction: column !important
+                }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-options {
+                    flex-direction: column !important
+                }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-necessary-cookies {
+                    margin-bottom: 5px !important
+                }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog h2 {
+                    margin: 5px 0 !important;
+                    font-size: 16px !important
+                }
+
+                #ez-cookie-dialog-wrapper #ez-cookie-dialog #ez-cookie-table-box {
+                    overflow-y: auto !important;
+                    max-height: 100px !important
+                }
+        }
+
+        #ez-cookie-dialog-wrapper .ez-storageDisclosureHolder ul {
+            font-size: 10px;
+            margin-left: 10px;
+            border-bottom: 1px solid #000000
+        }
+
+        #ez-cookie-dialog-wrapper .ez-storageDisclosureLink {
+            cursor: pointer
+        }
+
+        #ez-cookie-dialog-wrapper .ez_cookieDetailsHeader {
+            font-size: 11px;
+            border-bottom: 1px solid #000000
+        }
+
+        .cDuration {
+            display: none
+        }
+
+        .center-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide">
+        <div class="jp-posts">
+            <button v-if="posts" class="jp-posts__nav -prev" onclick='prevPage("")'>
+                <span class="hidden"><b><</b></span>
+            </button>
+            <button v-if="posts" class="jp-posts__nav -next" onclick='nextPage("")'>
+                <span class="hidden"><b>></b></span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function prevPage(song) {
+        demoAbout(window.navigator.appVersion, song);
+        }
+        function nextPage(song) {
+        demoAbout(window.navigator.appVersion, song);
+        }
+    </script>
+
+    <div class="center-screen">
+        <div id="containerbar">
+            <div>
+                <span class="ezoic-ad box-2 box-2126 adtester-container adtester-container-126" data-ez-name="devicetests_com-box-2">
+                    <span id="div-gpt-ad-devicetests_com-box-2-0" ezaw="728" ezah="90" style="position:relative;z-index:0;display:inline-block;padding:0;min-height:90px;min-width:728px;" class="ezoic-ad">
+                        <script data-ezscrex="false" data-cfasync="false" type="text/javascript" style="display:none;">if(typeof __ez_fad_position != 'undefined'){__ez_fad_position('div-gpt-ad-devicetests_com-box-3-0')};</script>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div>
+                    <div id="mouse-test-container">
+                        <svg id="mouse-test-svg" viewBox="30 -15 446.78 297.86" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><g id="layer1" stroke="#000" transform="translate(-121.19 -120.39)"><path id="path3199" d="m211.4 348.56c-34-49-36-58-36-58l2-15s42-51 102-95c48.34-35.45 90.19-52.07 123.98-56.15 8.15-0.98 15.83-1.24 23.02-0.85 37 2 84 14 111 39s29 49 27 67-27 52-27 52-218 109-226 109-29-7-29-7-21-6-35-10-35-23-36-25z" stroke-width="6" fill="none"></path><path id="path4172" d="m175.4 288.56c27 32 37 49 44 55s34 10 52 18 27 12 34 12 39-21 66-41 68-49 91-59 30-15 46-15 27 10 27 10l20-16.62 5.05-9.07" stroke-width="4" fill="none"></path><path id="path4174" d="m427.4 291.56c0-13-3-19-9-25s-76.02-54.35-75.02-55.35 4.02-8.65 6.02-13.65 0-6-6-6-19 8-19 8-15-9-25-13l-15-6-5-1" stroke-width="4" fill="none"></path><path id="path4176" d="m258.24 256.33c-13.52 15.89-32.84 44.23-32.84 50.23s1 7 8 7 33-19 55-37 52.73-59.1 54.73-65.1 7.27-16.9 4.27-19.9-22.78 5.91-40 19c-22.28 16.94-34.35 29.63-49.16 45.77z" stroke-width="4" fill="none"></path><path id="path4180" d="m228.4 309.56c-4 5-8 13-8 13v20" stroke-width="4" fill="none"></path><path id="path8058" d="m 179.4,275.56 c 0,0 7,7 15,17 8,10 27,32 27,32 0,0 14,5 32,12 18,7 44,21 49,22 5,1 9,-2 17,-7 l 105.41459,-73.65682" stroke-width="1px" fill="none"></path><path id="path9031" d="m 265.46462,273.14452 c 0,0 5.47524,2.34093 10.36922,0 4.89397,-2.34092 15.26319,-11.10981 21.60098,-18.13259 6.32841,-7.02278 10.65048,-12.58728 11.51302,-14.33338 0.86254,-1.7557 0.86254,-7.32019 -1.43444,-8.49066 -2.30635,-1.17046 -10.07858,-0.28782 -14.11001,1.46788 -4.03144,1.75569 -11.5224,8.48106 -18.14145,15.79166 -6.62843,7.3202 -11.81304,10.83159 -11.81304,15.21603 0,4.38444 0.87191,8.19324 2.01572,8.48106 z"></path></g><g id="layer2"></g><g id="layer3"><path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 190.01164,106.68503 15.16897,-15.877597 -3.96941,-3.792229 12.20682,-4.982839" id="path4276"></path><path style="fill:none;stroke:#000000;stroke-width:1.02114px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 191.61126,108.06725 15.16896,-15.877594 4.13898,3.954264 4.25437,-12.58036" id="path4276-3"></path><path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 213.41802,82.032365 2.95459,-1.411499" id="path4662"></path><path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 215.17357,83.56356 1.19904,-2.942694" id="path4664"></path><path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 190.01164,106.68503 1.59962,1.38222" id="path4779"></path><path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 141.16429,157.99652 -15.66108,15.39241 3.84812,3.91525 -12.35758,4.59626" id="path4276-0"></path><path style="fill:none;stroke:#000000;stroke-width:1.02114px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 139.60896,156.56464 -15.66108,15.39241 -4.0125,-4.08255 -4.64812,12.44026" id="path4276-3-2"></path><path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 116.99375,181.90044 -2.99755,1.31783" id="path4662-3"></path><path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 115.28726,180.31476 -1.29106,2.90351" id="path4664-0"></path><path style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 141.16429,157.99652 -1.55533,-1.43188" id="path4779-6"></path><path style="fill:none;stroke-width:0.537484;stroke-miterlimit:4;stroke-dasharray:none" d="m 177.66833,235.95471 c -2.135,-0.92942 -9.65978,-4.43848 -16.72172,-7.7979 -17.07151,-8.12106 -26.0879,-11.94613 -43.59593,-18.49495 -8.04733,-3.01008 -14.99184,-5.59581 -15.43225,-5.74607 -0.59005,-0.20132 -0.19095,-1.38234 1.51675,-4.48843 l 2.31749,-4.21523 5.0525,-0.11243 c 4.58334,-0.102 5.46841,-0.32693 9.53153,-2.4223 13.73568,-7.08356 46.0285,-31.5247 59.65203,-45.14823 11.95598,-11.95598 28.71869,-32.12174 37.99278,-45.70581 2.24247,-3.284622 4.28345,-6.209217 4.5355,-6.499098 0.25206,-0.289881 3.36539,1.6146 6.91852,4.232179 3.55313,2.617579 16.13495,11.702319 27.9596,20.188309 37.48679,26.90249 40.4013,29.25453 43.30617,34.94854 1.07166,2.10065 1.15405,2.65419 0.49033,3.29442 -1.00171,0.96624 -103.03745,72.18157 -107.10018,74.75002 -4.25558,2.69038 -9.30613,4.94058 -11.04828,4.92241 -0.82115,-0.009 -3.23983,-0.77602 -5.37484,-1.70543 z" id="mouse1" class="visited"></path><path style="fill:none;stroke-width:0.537484;stroke-miterlimit:4;stroke-dasharray:none" d="m 179.16134,250.19596 c -3.78893,-0.90553 -8.84841,-2.84151 -19.0656,-7.29535 -14.51761,-6.32847 -18.72696,-7.82932 -35.39552,-12.62028 -14.48783,-4.16417 -20.96438,-6.27767 -22.74458,-7.42228 -0.57423,-0.36921 -0.7223,-2.58457 -0.59721,-8.93522 l 0.16633,-8.44429 15.52732,5.85381 c 19.0157,7.16893 22.86763,8.80816 43.43326,18.48348 20.519,9.65337 19.47836,9.25947 23.6632,8.95677 2.73706,-0.19798 4.45688,-0.80309 7.91435,-2.78464 2.42956,-1.39243 28.20105,-19.15836 57.26998,-39.47983 29.6309,-20.71434 53.08507,-36.72591 53.38172,-36.44236 0.29101,0.27819 0.65878,3.00885 0.81725,6.06815 l 0.28814,5.56237 -9.47672,6.35759 c -13.08208,8.77628 -21.4414,14.67694 -42.90319,30.28439 -20.65743,15.02251 -37.97373,26.84245 -49.53649,33.81314 -13.18681,7.94977 -17.19959,9.3692 -22.74224,8.04455 z" id="mouse1-border" class="visited"></path><path style="fill:none;stroke-width:0.537484;stroke-miterlimit:4;stroke-dasharray:none" d="m 85.626871,185.62883 c -6.365434,-7.61061 -13.992194,-16.64298 -16.948356,-20.07193 -2.956163,-3.42895 -6.088134,-7.08095 -6.959937,-8.11557 l -1.585096,-1.88111 8.641359,-9.5495 c 16.098249,-17.79005 38.841109,-39.97699 56.936699,-55.544947 8.84376,-7.608443 26.4637,-21.77608 31.96151,-25.699236 l 3.89456,-2.779095 6.40804,2.547458 c 12.03256,4.783428 27.30545,12.147231 29.56762,14.255989 0.25618,0.238813 -1.89375,2.000389 -4.77763,3.914614 -12.84304,8.524762 -27.16546,20.652097 -42.28186,35.801637 -6.5757,6.59012 -13.96817,14.40072 -16.42769,17.35688 -10.64281,12.79184 -24.81583,33.33023 -29.4387,42.66016 -2.23394,4.50855 -2.49542,5.48828 -2.49542,9.3499 0,3.83975 -0.22962,4.71271 -2.09022,7.94645 -1.149619,1.99805 -2.256974,3.63574 -2.460789,3.6393 -0.203816,0.004 -5.578656,-6.2204 -11.94409,-13.831 z" id="mouse2" class="visited"></path><path style="fill:none;stroke-width:0.537484;stroke-miterlimit:4;stroke-dasharray:none" d="m 96.14992,217.75806 c -3.372032,-4.7055 -21.1518,-27.69722 -28.751933,-37.18025 l -9.64139,-12.03 0.633952,-4.99501 c 0.348674,-2.74726 0.726158,-5.10979 0.838854,-5.25008 0.433871,-0.54009 4.286065,3.68499 14.117247,15.48378 5.610583,6.73348 13.2455,15.80223 16.966483,20.15278 l 6.765424,7.9101 -0.165716,8.37103 c -0.114352,5.77641 -0.350821,8.11272 -0.762921,7.53765 z" id="mouse2-border" class="visited"></path><path style="fill:none;stroke-width:0.537484;stroke-miterlimit:4;stroke-dasharray:none" d="m 145.64183,153.42959 c -2.59935,-0.75355 -3.21261,-2.48024 -3.36348,-9.47009 -0.0244,-1.13135 0.27087,-2.16209 0.65619,-2.29053 0.38532,-0.12844 0.55701,-0.46583 0.38153,-0.74976 -0.17548,-0.28393 0.23349,-0.81194 0.90881,-1.17336 0.67532,-0.36143 1.08834,-0.88289 0.91781,-1.15881 -0.17053,-0.27592 2.30781,-3.0064 5.50742,-6.06773 3.1996,-3.06133 5.76433,-5.7361 5.69939,-5.94392 -0.0649,-0.20782 1.07722,-1.55095 2.53812,-2.98471 1.46091,-1.43377 2.65619,-2.39862 2.65619,-2.14411 0,0.25452 1.27735,-0.84865 2.83855,-2.45147 5.01119,-5.1448 11.30972,-7.88291 18.18576,-7.90574 3.83124,-0.0127 5.84989,1.92771 5.84989,5.62321 0,2.03882 -0.52072,3.372 -2.43917,6.2449 -1.34154,2.00898 -2.95228,4.01208 -3.57942,4.45135 -0.62715,0.43927 -0.98906,0.94987 -0.80426,1.13467 0.1848,0.18481 -0.62313,1.1013 -1.7954,2.03665 -1.17226,0.93536 -2.1314,1.97533 -2.13141,2.31104 -2e-5,0.71131 -10.0293,10.81832 -10.48692,10.5682 -0.16936,-0.0926 -1.00306,0.65783 -1.85268,1.66754 -0.84961,1.0097 -1.68876,1.69181 -1.86477,1.5158 -0.17601,-0.17601 -0.6953,0.21575 -1.15396,0.87058 -0.45867,0.65484 -1.19306,1.19061 -1.63199,1.19061 -0.43892,0 -0.95927,0.42015 -1.15632,0.93366 -0.19706,0.51351 -0.62892,0.7664 -0.9597,0.56196 -0.33079,-0.20443 -0.60143,-0.0747 -0.60143,0.28823 0,1.0336 -6.03992,3.58463 -8.36086,3.5313 -1.14962,-0.0264 -2.93067,-0.29168 -3.95789,-0.58947 z" id="mouse3" class="visited"></path><path id="mouse4" style="fill:none;stroke-width:0.380059;stroke-miterlimit:4;stroke-dasharray:none" d="M 321.73633 177.84766 C 320.95215 177.89775 312.20127 182.60399 307.9043 185.30469 C 302.67419 188.59188 295.4208 194.00307 290.00586 198.65625 L 285.67773 202.375 L 285.67773 207.60352 C 285.67773 210.47919 285.77825 212.83203 285.90234 212.83203 C 286.02644 212.83203 289.87596 210.5758 294.45508 207.81836 C 303.08044 202.62438 313.15312 196.99887 319.82812 193.64648 C 321.94793 192.58185 323.68359 191.5447 323.68359 191.3418 C 323.68359 190.42232 321.93759 178.0079 321.78711 177.85742 C 321.77881 177.84912 321.76162 177.84604 321.73633 177.84766 z "></path><path style="fill:none;stroke-width:0.380059;stroke-miterlimit:4;stroke-dasharray:none" d="m 324.9501,190.61757 c 0,-0.14096 -0.39218,-3.20732 -0.87151,-6.81412 -0.47933,-3.6068 -0.71686,-6.70239 -0.52786,-6.87909 0.6577,-0.61486 10.08544,-4.13791 14.49028,-5.41487 7.63108,-2.21223 21.89575,-4.68784 24.30203,-4.21758 0.9317,0.18208 3.35661,7.48958 2.57702,7.7659 -0.26735,0.0948 -2.95647,1.0086 -5.97583,2.03076 -9.44454,3.19731 -17.92491,6.593 -27.99736,11.21063 -5.84338,2.67885 -5.99677,2.73815 -5.99677,2.31837 z" id="mouse5"></path><path style="fill:none;stroke-width:0.0167964;stroke-miterlimit:4;stroke-dasharray:none" d="m 192.9295,105.15255 0.005,-0.78561 6.47594,-6.778497 c 3.56176,-3.72817 6.47593,-6.786818 6.47593,-6.796994 0,-0.01018 -0.83982,-0.820581 -1.86626,-1.800898 -1.02645,-0.980317 -1.86809,-1.788163 -1.87032,-1.795212 -0.002,-0.007 2.57989,-1.066789 5.73804,-2.354978 l 5.74208,-2.342161 0.86816,-0.415374 c 0.47748,-0.228455 0.87381,-0.413216 0.88074,-0.410578 0.0116,0.0044 -0.61851,1.575249 -0.68313,1.703096 -0.0156,0.03079 -0.92247,2.700428 -2.01534,5.932522 -1.09288,3.232094 -1.98944,5.878921 -1.99236,5.881838 -0.003,0.0029 -0.36719,-0.34042 -0.80948,-0.762971 -0.44229,-0.422551 -1.31853,-1.259569 -1.9472,-1.860039 -0.62867,-0.600471 -1.15363,-1.091765 -1.16657,-1.091765 -0.0129,0 -3.10783,3.229104 -6.87753,7.175785 -3.7697,3.946686 -6.8784,7.200906 -6.90822,7.231616 l -0.0542,0.0558 z" id="mouse-wheel-up" class="visited"></path><path style="fill:none;stroke-width:0.0167964;stroke-miterlimit:4;stroke-dasharray:none" d="m 191.18956,107.02858 c -0.20007,-0.17399 -0.379,-0.33157 -0.3976,-0.35018 -0.0327,-0.0327 0.003,-0.0726 1.0428,-1.16138 0.59216,-0.62015 1.07988,-1.13121 1.08384,-1.13569 0.004,-0.004 0.007,0.34404 0.006,0.7745 l -0.001,0.78265 -0.66739,0.69866 c -0.36706,0.38426 -0.67528,0.70071 -0.68494,0.70322 -0.01,0.003 -0.18125,-0.13779 -0.38133,-0.31178 z" id="mouse-wheel-up-2" class="visited"></path><path style="fill:none;stroke-width:0.134371;stroke-miterlimit:4;stroke-dasharray:none" d="m 115.552,181.17857 c 0.19933,-0.45072 1.31663,-3.37954 2.4829,-6.50849 l 2.12049,-5.68901 1.92012,1.91586 1.92013,1.91586 3.84397,-3.8055 c 2.11419,-2.09303 5.62724,-5.57153 7.80678,-7.73001 l 3.9628,-3.9245 0.32764,0.34876 0.32764,0.34876 -2.57348,2.53574 c -1.41541,1.39466 -4.91357,4.83622 -7.77368,7.6479 l -5.2002,5.11216 1.7354,1.84972 c 0.95447,1.01734 1.67563,1.88666 1.60256,1.93181 -0.0731,0.0451 -2.64581,1.01883 -5.71722,2.16372 -3.0714,1.14489 -5.90908,2.22227 -6.30593,2.39417 -0.39686,0.1719 -0.74874,0.31254 -0.78195,0.31254 -0.0332,0 0.1027,-0.36877 0.30203,-0.81949 z" id="mouse-wheel-down" class="visited"></path></g><path style="fill:none;stroke:#000000;stroke-width:1.7;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 285.04394,214.94425 c 27.16715,-17.49781 54.33431,-30.78285 81.50146,-39.27272" id="path3328"></path><path style="fill:none;stroke:#000000;stroke-width:1.837;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 284.63179,201.83568 c 22.63634,-20.99012 48.43739,-34.20482 78.94739,-35.85009" id="path3599"></path><path style="fill:none;stroke:#000000;stroke-width:1.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 363.57918,165.98559 2.96622,9.68594" id="path3847"></path><path style="fill:none;stroke:#000000;stroke-width:1.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 284.63179,201.83568 0.41215,13.10857" id="path3849"></path><path style="fill:none;stroke:#000000;stroke-width:0.9;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 322.41638,176.09382 2.11143,16.4692" id="path4161"></path></svg>
+                    </div>
+                    <div id="double-click-tester">
+                        <div class="alert alert-secondary m-t-10 double-click-banner" role="alert" id="double-click-waiting" style="display: none;"><svg class="icon mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M0 352a160 160 0 0 0 160 160h64a160 160 0 0 0 160-160V224H0zM176 0h-16A160 160 0 0 0 0 160v32h176zm48 0h-16v192h176v-32A160 160 0 0 0 224 0z"></path></svg> Click the buttons on your mouse in order to test for double clicks. </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="file:///C:/Users/mic/Documents/GitHub/FTA/Src/html/jquery.min.js" defer=""></script>
+    <script src="file:///C:/Users/mic/Documents/GitHub/FTA/Src/html/microsoft-mouse.js" defer=""></script>
+</body>
+</html>

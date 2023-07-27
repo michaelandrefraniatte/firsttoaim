@@ -1,0 +1,1082 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <style>
+
+        :root {
+            --animation_speed: 600ms;
+            --animation_delay: 200ms;
+        }
+
+        .jp-posts {
+            position: absolute;
+            overflow: hidden;
+            background-image: linear-gradient(55deg, rgba(208, 208, 208, 0.03) 0%, rgba(208, 208, 208, 0.03) 20%, rgba(55, 55, 55, 0.03) 20%, rgba(55, 55, 55, 0.03) 40%, rgba(81, 81, 81, 0.03) 40%, rgba(81, 81, 81, 0.03) 60%, rgba(208, 208, 208, 0.03) 60%, rgba(208, 208, 208, 0.03) 80%, rgba(191, 191, 191, 0.03) 80%, rgba(191, 191, 191, 0.03) 100%), linear-gradient(257deg, rgba(72, 72, 72, 0.03) 0%, rgba(72, 72, 72, 0.03) 16.667%, rgba(138, 138, 138, 0.03) 16.667%, rgba(138, 138, 138, 0.03) 33.334%, rgba(54, 54, 54, 0.03) 33.334%, rgba(54, 54, 54, 0.03) 50.001%, rgba(161, 161, 161, 0.03) 50.001%, rgba(161, 161, 161, 0.03) 66.668%, rgba(17, 17, 17, 0.03) 66.668%, rgba(17, 17, 17, 0.03) 83.335%, rgba(230, 230, 230, 0.03) 83.335%, rgba(230, 230, 230, 0.03) 100.002%), linear-gradient(47deg, rgba(191, 191, 191, 0.01) 0%, rgba(191, 191, 191, 0.01) 16.667%, rgba(27, 27, 27, 0.01) 16.667%, rgba(27, 27, 27, 0.01) 33.334%, rgba(66, 66, 66, 0.01) 33.334%, rgba(66, 66, 66, 0.01) 50.001%, rgba(36, 36, 36, 0.01) 50.001%, rgba(36, 36, 36, 0.01) 66.668%, rgba(230, 230, 230, 0.01) 66.668%, rgba(230, 230, 230, 0.01) 83.335%, rgba(93, 93, 93, 0.01) 83.335%, rgba(93, 93, 93, 0.01) 100.002%), linear-gradient(90deg, #F3F3F3, #F3F3F3);
+            padding: 4vw 0;
+        }
+
+        .jp-posts__wrap {
+            position: absolute;
+            transition: all var(--animation_speed) ease;
+        }
+
+        .jp-post {
+            position: absolute;
+            backface-visibility: hidden;
+            z-index: 1;
+            width: 100%;
+            padding: 0 calc(4vw + 2em);
+        }
+
+            .jp-post.-current {
+                transform: translateX(0);
+                z-index: 2;
+            }
+
+                .jp-post.-current.-moveleft {
+                    transform-origin: right center;
+                    animation: leave var(--animation_speed);
+                    opacity: 0;
+                }
+
+                .jp-post.-current.-moveright {
+                    transform-origin: left center;
+                    animation: leave var(--animation_speed);
+                    opacity: 0;
+                }
+
+            .jp-post.-hidden {
+                position: absolute;
+                top: 0;
+            }
+
+                .jp-post.-hidden.-moving {
+                    z-index: 3;
+                }
+
+                .jp-post.-hidden.-moveleft, .jp-post.-hidden.-moveright {
+                    transform: translateX(0);
+                }
+
+            .jp-post.-next {
+                transform: translateX(100vw);
+            }
+
+            .jp-post.-prev {
+                transform: translateX(-100vw);
+            }
+
+            .jp-post.-moving {
+                transition: all var(--animation_speed) cubic-bezier(0.165, 0.84, 0.44, 1) var(--animation_delay);
+            }
+
+                .jp-post.-moving.-current {
+                    transition: transform var(--animation_speed) cubic-bezier(0.94, 0.01, 1, 1.02), opacity var(--animation_speed) cubic-bezier(0.94, 0.01, 1, 1.02);
+                }
+
+        @keyframes leave {
+            0% {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scaleX(2);
+                opacity: 0;
+            }
+        }
+
+        .jp-post__image {
+            display: table;
+            margin: auto;
+        }
+
+        .jp-posts__nav {
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            background-color: lightgray;
+            color: white;
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 300ms ease;
+            z-index: 10;
+        }
+
+            .jp-posts__nav.-prev {
+                left: 1vw;
+                grid-area: prev;
+            }
+
+            .jp-posts__nav.-next {
+                grid-area: next;
+                right: 1vw;
+            }
+
+            .jp-posts__nav:hover {
+                box-shadow: 0 0 0 0.3em white, 0 0 0 0.5em #adddff;
+            }
+
+                .jp-posts__nav:hover:focus {
+                    box-shadow: 0 0 0 0.3em white, 0 0 0 0.5em #adddff;
+                }
+
+            .jp-posts__nav:focus {
+                box-shadow: 0 0 0 0.2em #adddff;
+                outline: none;
+            }
+
+        button {
+            font-size: 15px;
+        }
+    </style>
+    <style>
+        body {
+            font-family: arial;
+            font-size: 10px;
+        }
+
+            body > p {
+                color: #fff;
+                text-align: center;
+                font-size: 20px;
+            }
+
+        ::-moz-selection {
+            background: none;
+        }
+
+        ::selection {
+            background: none;
+        }
+
+        ::-moz-selection {
+            background: none;
+        }
+
+        #keyboard {
+            width: 1200px;
+            height: 410px;
+            margin: 20px auto;
+            background: linear-gradient(to bottom, #65666a 0%, #0d0d11 9%, #0d0d11 9%, #0d0d11 12%, #0d0d11 37%, #0b0d19 100%);
+            border-radius: 40px 40px 50px 50px;
+            padding: 6px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+            #keyboard .keyboard-plate {
+                background: linear-gradient(to bottom, #44484b 0%, #404447 4%, #3f4346 86%, #6b6a6f 100%);
+                border: 1px solid #333;
+                width: 100%;
+                position: relative;
+                height: 100%;
+                border-radius: 40px 40px 50px 50px;
+                background: url(file:///C:/Users/mic/Documents/GitHub/FTA/Src/html/microsoft-keyboard.jpg) repeat -30px -20px #fff;
+                background-size: 7%;
+                filter: brightness(0.95);
+            }
+
+            #keyboard .key {
+                display: inline-block;
+                float: left;
+            }
+
+                #keyboard .key:hover, #keyboard .key.pressed {
+                    filter: brightness(0.95);
+                    cursor: pointer;
+                }
+
+            #keyboard .media-key, #keyboard .function-key {
+                font-size: 12px;
+                color: #fff;
+                background: linear-gradient(to bottom, #77767b 0%, #222327 4%, #222327 91%, #9c9da1 100%);
+                padding: 3px 23px;
+                box-shadow: 0 0 10px #000;
+                border-radius: 3px;
+            }
+
+                #keyboard .media-key:hover, #keyboard .media-key.pressed, #keyboard .function-key:hover, #keyboard .function-key.pressed {
+                    box-shadow: inset 0 0 10px #000;
+                }
+
+                #keyboard .media-key i, #keyboard .function-key i {
+                    margin: 0 2px;
+                    font-size: 8px;
+                    vertical-align: middle;
+                }
+
+            #keyboard .function-keys {
+                padding-left: 20px;
+                overflow: hidden;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+
+                #keyboard .function-keys .function-key {
+                    color: #cdd0d5;
+                    font-size: 8px;
+                    padding: 7px 0;
+                    width: 40px;
+                    text-align: center;
+                    margin-right: 7px;
+                    border-radius: 5px;
+                    box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+                    border: 2px solid rgba(0, 0, 0, 0.6);
+                    background: linear-gradient(to bottom, #44484b 0%, #404447 4%, #3f4346 86%, #6b6a6f 100%);
+                }
+
+                #keyboard .function-keys .esc, #keyboard .function-keys .f4, #keyboard .function-keys .f8 {
+                    margin-right: 40px;
+                }
+
+                #keyboard .function-keys .f12 {
+                    margin-right: 30px;
+                }
+
+            #keyboard .logo {
+                position: absolute;
+                right: 70px;
+                top: 30px;
+            }
+
+                #keyboard .logo img {
+                    width: 100px;
+                    filter: brightness(1.8);
+                }
+
+            #keyboard .calc-top-panel {
+                overflow: hidden;
+                background: #1f2326;
+                border-radius: 10px;
+                border: 1px solid #000;
+                margin: 20px 20px 10px;
+                padding: 5px 0 5px;
+                width: 655px;
+                padding-left: 275px;
+            }
+
+            #keyboard .top-panel {
+                overflow: hidden;
+                margin: 20px 20px 10px;
+                padding: 5px 0 5px;
+                width: 655px;
+                padding-left: 275px;
+            }
+
+                #keyboard .top-panel .play-pause, #keyboard .calc-top-panel .play-pause {
+                    margin-right: 10px;
+                }
+
+                #keyboard .top-panel .volume-down i:first-child, #keyboard .top-panel .volume-up i:first-child, #keyboard .calc-top-panel .volume-down i:first-child, #keyboard .calc-top-panel .volume-up i:first-child {
+                    font-size: 12px;
+                }
+
+                #keyboard .top-panel .volume-down i:last-child, #keyboard .top-panel .volume-up i:last-child, #keyboard .calc-top-panel .volume-down i:last-child, #keyboard .calc-top-panel .volume-up i:last-child {
+                    font-size: 6px;
+                }
+
+                #keyboard .top-panel .mute, #keyboard .calc-top-panel .mute {
+                    margin-left: 10px;
+                }
+
+                    #keyboard .top-panel .mute i, #keyboard .calc-top-panel .mute i {
+                        display: inline-block;
+                        width: 10px;
+                        font-size: 6px;
+                        height: 10px;
+                        line-height: 10px;
+                        border-radius: 50%;
+                        border: 1px solid #fff;
+                        text-align: center;
+                    }
+
+            #keyboard .calc-top-panel {
+                width: 200px;
+                float: right;
+                padding: 0;
+                margin: 0 20px 0 0;
+                box-shadow: inset 0 0 5px #000;
+            }
+
+                #keyboard .calc-top-panel .media-key {
+                    font-size: 12px;
+                    padding: 6px 15px;
+                    background: linear-gradient(to bottom, #44484b 0%, #404447 4%, #3f4346 86%, #6b6a6f 100%);
+                }
+
+                    #keyboard .calc-top-panel .media-key i {
+                        font-size: 10px;
+                    }
+
+                #keyboard .calc-top-panel .led-indicator {
+                    color: #333;
+                    width: 12px;
+                    height: 12px;
+                    text-align: center;
+                    font-weight: bold;
+                    line-height: 13px;
+                    font-size: 8px;
+                    margin: 5px 18px;
+                    border: 1px solid;
+                    display: inline-block;
+                    opacity: 0.9;
+                    transition: all 0.3s ease-in;
+                    border-radius: 2px;
+                }
+
+                    #keyboard .calc-top-panel .led-indicator.active, #keyboard .calc-top-panel .led-indicator:hover {
+                        box-shadow: 0 0 5px rgba(206, 233, 87, 0.4);
+                        color: #b2ca54;
+                    }
+
+            #keyboard .main-keys {
+                margin-left: 20px;
+                margin-top: 20px;
+                float: left;
+            }
+
+                #keyboard .main-keys .main-keys-row {
+                    clear: both;
+                    position: relative;
+                    margin-top: -1px;
+                }
+
+                    #keyboard .main-keys .main-keys-row.first-row {
+                        z-index: 2;
+                    }
+
+                    #keyboard .main-keys .main-keys-row.second-row {
+                        z-index: 4;
+                    }
+
+                    #keyboard .main-keys .main-keys-row.third-row {
+                        z-index: 6;
+                    }
+
+                    #keyboard .main-keys .main-keys-row.forth-row {
+                        z-index: 8;
+                    }
+
+                    #keyboard .main-keys .main-keys-row.fifth-row {
+                        z-index: 10;
+                    }
+
+                    #keyboard .main-keys .main-keys-row.first-row .key {
+                        margin-top: 0;
+                    }
+
+            #keyboard .centeral-keys {
+                float: left;
+                margin-left: 23px;
+                margin-top: 20px;
+                position: relative;
+                height: 252px;
+            }
+
+                #keyboard .centeral-keys .arrow-keys {
+                    bottom: 0;
+                    position: absolute;
+                }
+
+                    #keyboard .centeral-keys .arrow-keys .arrow-up {
+                        margin: 0 auto;
+                        display: block;
+                        clear: both;
+                        float: none;
+                    }
+
+                    #keyboard .centeral-keys .arrow-keys .arrow-left, #keyboard .centeral-keys .arrow-keys .arrow-down, #keyboard .centeral-keys .arrow-keys .arrow-right {
+                        position: relative;
+                        z-index: 10;
+                        margin-top: -2px;
+                    }
+
+            #keyboard .deep-key {
+                border-style: solid;
+                border-color: #222629 #292d30 #5d6164 #23272a;
+                border-width: 3px 8px 8px 3px;
+                background: #373b3e;
+                color: #fff;
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+                border-radius: 5px;
+                width: 40px;
+                height: 40px;
+                overflow: hidden;
+                position: relative;
+            }
+
+                #keyboard .deep-key:hover, #keyboard .deep-key.pressed {
+                    border-bottom-width: 6px;
+                    border-top-width: 5px;
+                }
+
+                #keyboard .deep-key .blue {
+                    color: #5296d2;
+                }
+
+                #keyboard .deep-key.long-100 {
+                    width: 115px;
+                }
+
+                #keyboard .deep-key.long-90 {
+                    width: 92px;
+                }
+
+                #keyboard .deep-key.long-80 {
+                    width: 85px;
+                }
+
+                #keyboard .deep-key.long-70 {
+                    width: 70px;
+                }
+
+                #keyboard .deep-key.long-60 {
+                    width: 60px;
+                }
+
+                #keyboard .deep-key.long-50 {
+                    width: 50px;
+                }
+
+                #keyboard .deep-key.spacebar {
+                    width: 270px;
+                }
+
+                #keyboard .deep-key.height-double {
+                    overflow: visible;
+                }
+
+                    #keyboard .deep-key.height-double:after {
+                        content: "";
+                        display: block;
+                        width: 40px;
+                        left: -3px;
+                        height: 53px;
+                        border-style: solid;
+                        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+                        border-color: #222629 #292d30 #5d6164 #23272a;
+                        border-width: 0 8px 8px 3px;
+                        background: #373b3e;
+                        position: absolute;
+                        z-index: 2;
+                    }
+
+                #keyboard .deep-key.enter {
+                    width: 65px;
+                    position: absolute;
+                    overflow: visible;
+                    text-align: right;
+                }
+
+                    #keyboard .deep-key.enter .enter-arrow {
+                        position: absolute;
+                        margin-left: -3px;
+                        margin-top: 1px;
+                    }
+
+                    #keyboard .deep-key.enter .enter-line-hoz {
+                        letter-spacing: -1px;
+                    }
+
+                    #keyboard .deep-key.enter .enter-line-ver {
+                        display: inline-block;
+                        position: absolute;
+                        margin-top: 1px;
+                        margin-lfet: -2px;
+                    }
+
+                    #keyboard .deep-key.enter:after {
+                        content: "";
+                        display: block;
+                        width: 55px;
+                        left: 7px;
+                        height: 52px;
+                        border-style: solid;
+                        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+                        border-color: #222629 #292d30 #5d6164 #23272a;
+                        border-width: 0 8px 8px 3px;
+                        background: #373b3e;
+                        position: absolute;
+                        z-index: 2;
+                    }
+
+                #keyboard .deep-key .top-left, #keyboard .deep-key .top-right, #keyboard .deep-key .bottom-left, #keyboard .deep-key .bottom-right {
+                    width: 8px;
+                    float: left;
+                    padding: 5px;
+                    height: 8px;
+                }
+
+                #keyboard .deep-key .top-center, #keyboard .deep-key .bottom-center, #keyboard .deep-key .half-top, #keyboard .deep-key .half-bottom {
+                    width: 100%;
+                    height: 8px;
+                    line-height: 20px;
+                    padding: 4px 0 0;
+                    text-align: center;
+                }
+
+                #keyboard .deep-key .top-right, #keyboard .deep-key .bottom-right {
+                    text-align: right;
+                }
+
+                #keyboard .deep-key .whole {
+                    text-align: center;
+                    padding: 14px 2px;
+                }
+
+                #keyboard .deep-key .windows {
+                    font-size: 14px;
+                }
+
+                #keyboard .deep-key .options i {
+                    border: 1px solid #fff;
+                    padding: 2px 3px;
+                    font-size: 7px;
+                }
+
+                #keyboard .deep-key.tab {
+                    letter-spacing: -1px;
+                }
+
+            #keyboard .calc-keys {
+                float: right;
+                margin-right: 18px;
+                margin-top: 20px;
+            }
+
+                #keyboard .calc-keys .calc-row {
+                    clear: both;
+                    position: relative;
+                }
+
+                    #keyboard .calc-keys .calc-row .key {
+                        margin-top: -1px;
+                    }
+
+                    #keyboard .calc-keys .calc-row.first-row {
+                        z-index: 2;
+                        margin-top: 0;
+                    }
+
+                        #keyboard .calc-keys .calc-row.first-row .key {
+                            margin-top: 0;
+                        }
+
+                    #keyboard .calc-keys .calc-row.second-row {
+                        z-index: 4;
+                    }
+
+                    #keyboard .calc-keys .calc-row.third-row {
+                        z-index: 6;
+                    }
+
+                    #keyboard .calc-keys .calc-row.forth-row {
+                        z-index: 8;
+                    }
+
+                    #keyboard .calc-keys .calc-row.fifth-row {
+                        z-index: 10;
+                    }
+
+        .center-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide">
+        <div class="jp-posts">
+            <button v-if="posts" class="jp-posts__nav -prev" onclick='prevPage("")'>
+                <span class="hidden"><b><</b></span>
+            </button>
+            <button v-if="posts" class="jp-posts__nav -next" onclick='nextPage("")'>
+                <span class="hidden"><b>></b></span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function prevPage(song) {
+        demoAbout(window.navigator.appVersion, song);
+        }
+        function nextPage(song) {
+        demoAbout(window.navigator.appVersion, song);
+        }
+    </script>
+
+    <div id='keyboard' class="center-screen">
+        <div class='keyboard-plate'>
+            <div class='top-panel'>
+            </div>
+            <div class='function-keys'>
+                <div class='key function-key esc' key-code='27'>Esc</div>
+                <div class='key function-key f1' key-code='112'>F1</div>
+                <div class='key function-key f2' key-code='113'>F2</div>
+                <div class='key function-key f3' key-code='114'>F3</div>
+                <div class='key function-key f4' key-code='115'>F4</div>
+                <div class='key function-key f5' key-code='116'>F5</div>
+                <div class='key function-key f6' key-code='117'>F6</div>
+                <div class='key function-key f7' key-code='118'>F7</div>
+                <div class='key function-key f8' key-code='119'>F8</div>
+                <div class='key function-key f9' key-code='120'>F9</div>
+                <div class='key function-key f10' key-code='121'>F10</div>
+                <div class='key function-key f11' key-code='122'>F11</div>
+                <div class='key function-key f12' key-code='123'>F12</div>
+                <div class='key function-key prtscn'>PrtScn</div>
+                <div class='key function-key scrlk' function='scrolllook' key-code='145'>ScrLk</div>
+                <div class='key function-key pause' key-code='19'>Pause</div>
+                <div class='calc-top-panel'>
+                    <div class='key media-key'></div>
+                    <div class='led-numlock led-indicator'>1</div>
+                    <div class='led-capslock led-indicator'>A</div>
+                    <div class='led-scrolllook led-indicator'>
+                        <i class='fas fa-down'></i>
+                    </div>
+                </div>
+            </div>
+            <div class='main-keys'>
+                <div class='first-row main-keys-row'>
+                    <div class='key deep-key' key-code='223'>
+                        <div class='top-left'>¬</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>'</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='49'>
+                        <div class='top-left'>!</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>1</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='50'>
+                        <div class='top-left'>"</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>2</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='51'>
+                        <div class='top-left'>£</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>3</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='52'>
+                        <div class='top-left'>$</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>4</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='53'>
+                        <div class='top-left'>%</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>5</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='54'>
+                        <div class='top-left'>^</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>6</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='55'>
+                        <div class='top-left'>&</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>7</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='56'>
+                        <div class='top-left'>*</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>8</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='57'>
+                        <div class='top-left'>(</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>9</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='48'>
+                        <div class='top-left'>)</div>
+                        <div class='top-right'></div>
+                        <div class='bottom-left'>0</div>
+                        <div class='bottom-right'></div>
+                    </div>
+                    <div class='key deep-key' key-code='189'>
+                        <div class='top-center'>_</div>
+                        <div class='bottom-center'>-</div>
+                    </div>
+                    <div class='key deep-key' key-code='187'>
+                        <div class='top-center'>+</div>
+                        <div class='bottom-center'>=</div>
+                    </div>
+                    <div class='key deep-key long-80' key-code='8'>
+                        <div class='whole align-right'>Backspace</div>
+                    </div>
+                </div>
+                <div class='second-row main-keys-row'>
+                    <div class='key deep-key long-60 tab' key-code='9'>
+                        <div class='half-top'>| ------- ></div>
+                        <div class='half-bottom'>< ------- |</div>
+                    </div>
+                    <div class='key deep-key' key-code='81'>
+                        <div class='whole'>Q</div>
+                    </div>
+                    <div class='key deep-key' key-code='87'>
+                        <div class='whole'>W</div>
+                    </div>
+                    <div class='key deep-key' key-code='69'>
+                        <div class='whole'>E</div>
+                    </div>
+                    <div class='key deep-key' key-code='82'>
+                        <div class='whole'>R</div>
+                    </div>
+                    <div class='key deep-key' key-code='84'>
+                        <div class='whole'>T</div>
+                    </div>
+                    <div class='key deep-key' key-code='89'>
+                        <div class='whole'>Y</div>
+                    </div>
+                    <div class='key deep-key' key-code='85'>
+                        <div class='whole'>U</div>
+                    </div>
+                    <div class='key deep-key' key-code='73'>
+                        <div class='whole'>I</div>
+                    </div>
+                    <div class='key deep-key' key-code='79'>
+                        <div class='whole'>O</div>
+                    </div>
+                    <div class='key deep-key' key-code='80'>
+                        <div class='whole'>P</div>
+                    </div>
+                    <div class='key deep-key' key-code='219'>
+                        <div class='half-top'>{</div>
+                        <div class='half-bottom'>[</div>
+                    </div>
+                    <div class='key deep-key' key-code='221'>
+                        <div class='half-top'>}</div>
+                        <div class='half-bottom'>]</div>
+                    </div>
+                    <div class='key deep-key enter' key-code='13' ss='enter'>
+                        <div class='whole'>
+                            <span class='enter-arrow'><</span>
+                            <span class='enter-line-hoz'>----------</span>
+                            <span class='enter-line-ver'>'</span>
+                        </div>
+                    </div>
+                </div>
+                <div class='third-row main-keys-row'>
+                    <div class='key deep-key long-70' function='capslock' key-code='20'>
+                        <div class='whole align-right'>Caps Lock</div>
+                    </div>
+                    <div class='key deep-key' key-code='65'>
+                        <div class='whole'>A</div>
+                    </div>
+                    <div class='key deep-key' key-code='83'>
+                        <div class='whole'>S</div>
+                    </div>
+                    <div class='key deep-key' key-code='68'>
+                        <div class='whole'>D</div>
+                    </div>
+                    <div class='key deep-key' key-code='70'>
+                        <div class='whole'>F</div>
+                    </div>
+                    <div class='key deep-key' key-code='71'>
+                        <div class='whole'>G</div>
+                    </div>
+                    <div class='key deep-key' key-code='72'>
+                        <div class='whole'>H</div>
+                    </div>
+                    <div class='key deep-key' key-code='74'>
+                        <div class='whole'>J</div>
+                    </div>
+                    <div class='key deep-key' key-code='75'>
+                        <div class='whole'>K</div>
+                    </div>
+                    <div class='key deep-key' key-code='76'>
+                        <div class='whole'>L</div>
+                    </div>
+                    <div class='key deep-key' key-code='186'>
+                        <div class='half-top'>:</div>
+                        <div class='half-bottom'>;</div>
+                    </div>
+                    <div class='key deep-key' key-code='192'>
+                        <div class='half-top'>@</div>
+                        <div class='half-bottom'>'</div>
+                    </div>
+                    <div class='key deep-key' key-code='222'>
+                        <div class='half-top'>~</div>
+                        <div class='half-bottom'>#</div>
+                    </div>
+                </div>
+                <div class='forth-row main-keys-row'>
+                    <div class='key deep-key long-50'>
+                        <div class='whole shift'>
+                            <i class='fas fa-arrow-up'></i>
+                        </div>
+                    </div>
+                    <div class='key deep-key long-50' key-code='220'>
+                        <div class='half-top'></div>
+                        <div class='half-bottom'>\</div>
+                    </div>
+                    <div class='key deep-key' key-code='90'>
+                        <div class='whole'>Z</div>
+                    </div>
+                    <div class='key deep-key' key-code='88'>
+                        <div class='whole'>X</div>
+                    </div>
+                    <div class='key deep-key' key-code='67'>
+                        <div class='whole'>C</div>
+                    </div>
+                    <div class='key deep-key' key-code='86'>
+                        <div class='whole'>V</div>
+                    </div>
+                    <div class='key deep-key' key-code='66'>
+                        <div class='whole'>B</div>
+                    </div>
+                    <div class='key deep-key' key-code='78'>
+                        <div class='whole'>N</div>
+                    </div>
+                    <div class='key deep-key' key-code='77'>
+                        <div class='whole'>M</div>
+                    </div>
+                    <div class='key deep-key' key-code='188'>
+                        <div class='half-top'><</div>
+                        <div class='half-bottom'>,</div>
+                    </div>
+                    <div class='key deep-key' key-code='190'>
+                        <div class='half-top'>></div>
+                        <div class='half-bottom'>.</div>
+                    </div>
+                    <div class='key deep-key' key-code='191'>
+                        <div class='half-top'>?</div>
+                        <div class='half-bottom'>/</div>
+                    </div>
+                    <div class='key deep-key long-100' key-code='16' ss='spacebar'>
+                        <div class='whole shift'>
+                            <i class='fas fa-arrow-up'></i>
+                        </div>
+                    </div>
+                </div>
+                <div class='fifth-row main-keys-row'>
+                    <div class='key deep-key long-60' key-code='17'>
+                        <div class='whole'>Ctrl</div>
+                    </div>
+                    <div class='key deep-key long-50'>
+                        <div class='whole windows'>
+                            <i class='fab fa-windows'></i>
+                        </div>
+                    </div>
+                    <div class='key deep-key long-50' key-code='18'>
+                        <div class='whole'>Alt</div>
+                    </div>
+                    <div class='key deep-key spacebar' key-code='32' ss='spacebar'>
+                        <div class='whole'></div>
+                    </div>
+                    <div class='key deep-key long-50'>
+                        <div class='whole'>Alt Gr</div>
+                    </div>
+                    <div class='key deep-key long-50'>
+                        <div class='whole blue'>Fn</div>
+                    </div>
+                    <div class='key deep-key long-70' key-code='93'>
+                        <div class='whole options'>
+                            <i class='fas fa-bars'></i>
+                        </div>
+                    </div>
+                    <div class='key deep-key long-70'>
+                        <div class='whole'>Ctrl</div>
+                    </div>
+                </div>
+            </div>
+            <div class='centeral-keys'>
+                <div class='first-row'>
+                    <div class='key deep-key align-left' key-code='45'>
+                        <div class='whole'>Insert</div>
+                    </div>
+                    <div class='key deep-key align-left' key-code='36'>
+                        <div class='whole'>Home</div>
+                    </div>
+                    <div class='key deep-key align-left' key-code='33'>
+                        <div class='whole'>Page Up</div>
+                    </div>
+                </div>
+                <div class='second-row'>
+                    <div class='key deep-key align-left' key-code='46'>
+                        <div class='whole'>Delete</div>
+                    </div>
+                    <div class='key deep-key align-left' key-code='35'>
+                        <div class='whole'>End</div>
+                    </div>
+                    <div class='key deep-key align-left' key-code='34'>
+                        <div class='whole'>Page Down</div>
+                    </div>
+                </div>
+                <div class='arrow-keys'>
+                    <div class='key deep-key arrow-up' key-code='38'>
+                        <div class='whole'>
+                            <i class='fas fa-chevron-up'></i>
+                        </div>
+                    </div>
+                    <div class='key deep-key arrow-left' key-code='37'>
+                        <div class='whole'>
+                            <i class='fas fa-chevron-left'></i>
+                        </div>
+                    </div>
+                    <div class='key deep-key arrow-down' key-code='40'>
+                        <div class='whole'>
+                            <i class='fas fa-chevron-down'></i>
+                        </div>
+                    </div>
+                    <div class='key deep-key arrow-right' key-code='39'>
+                        <div class='whole'>
+                            <i class='fas fa-chevron-right'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='calc-keys'>
+                <div class='calc-row first-row'>
+                    <div class='key deep-key' function='numlock' key-code='144'>
+                        <div class='whole'>Num Lock</div>
+                    </div>
+                    <div class='key deep-key' key-code='111'>
+                        <div class='whole'>/</div>
+                    </div>
+                    <div class='key deep-key' key-code='106'>
+                        <div class='whole'>*</div>
+                    </div>
+                    <div class='key deep-key' key-code='109'>
+                        <div class='whole'>-</div>
+                    </div>
+                </div>
+                <div class='calc-row second-row'>
+                    <div class='key deep-key' key-code='103'>
+                        <div class='whole'>7</div>
+                    </div>
+                    <div class='key deep-key' key-code='104'>
+                        <div class='whole'>8</div>
+                    </div>
+                    <div class='key deep-key' key-code='105'>
+                        <div class='whole'>9</div>
+                    </div>
+                    <div class='key deep-key height-double' key-code='107'>
+                        <div class='whole'>+</div>
+                    </div>
+                </div>
+                <div class='calc-row third-row'>
+                    <div class='key deep-key' key-code='100'>
+                        <div class='whole'>4</div>
+                    </div>
+                    <div class='key deep-key' key-code='101'>
+                        <div class='whole'>5</div>
+                    </div>
+                    <div class='key deep-key' key-code='102'>
+                        <div class='whole'>6</div>
+                    </div>
+                </div>
+                <div class='calc-row forth-row'>
+                    <div class='key deep-key' key-code='97'>
+                        <div class='whole'>1</div>
+                    </div>
+                    <div class='key deep-key' key-code='98'>
+                        <div class='whole'>2</div>
+                    </div>
+                    <div class='key deep-key' key-code='99'>
+                        <div class='whole'>3</div>
+                    </div>
+                    <div class='key deep-key height-double'>
+                        <div class='whole'>Enter</div>
+                    </div>
+                </div>
+                <div class='calc-row fifth-row'>
+                    <div class='key deep-key long-90' key-code='96'>
+                        <div class='whole'>0</div>
+                    </div>
+                    <div class='key deep-key' key-code='110'>
+                        <div class='whole'>.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/admsev/jquery-play-sound/master/jquery.playSound.js"></script>
+    <script>
+        $(".key").on("mousedown", e => {
+        let target = e.currentTarget;
+        $(".key").removeClass("pressed");
+        $(target).toggleClass("pressed");
+
+        var fn = $(target).attr("function");
+
+        if (typeof fn !== typeof undefined && fn !== false) {
+        switch (fn) {
+        case "numlock":
+        $(".led-indicator.led-numlock").toggleClass("active");
+        break;
+        case "capslock":
+        $(".led-indicator.led-capslock").toggleClass("active");
+        break;
+        case "scrolllook":
+        $(".led-indicator.led-scrolllook").toggleClass("active");
+        break;}
+
+        }
+        });
+
+        $(".key").on("mouseup", () => {
+        $(".key").removeClass("pressed");
+        });
+
+        $(".deep-key").on("click", e => {
+        let target = e.currentTarget;
+        let ss = $(target).attr("ss");
+
+        if (typeof ss !== typeof undefined && ss !== false) {
+        switch (ss) {
+        case "spacebar":
+        $.playSound("http://www.freesfx.co.uk/rx2/mp3s/5/16952_1461335341.mp3");
+        break;
+        case "enter":
+        $.playSound("http://www.freesfx.co.uk/rx2/mp3s/5/16951_1461335341.mp3");
+        break;}
+
+        } else {
+        $.playSound("http://www.freesfx.co.uk/rx2/mp3s/6/18660_1464810669.mp3");
+        }
+        });
+
+        $(".function-key, .media-key").on("click", () => {
+        $.playSound("http://freesound.org/data/previews/181/181003_2901073-lq.mp3");
+        });
+
+        $(window).on("keydown", e => {
+        let keyCode = e.keyCode;
+        $('.key[key-code="' + keyCode + '"]').click();
+        $('.key[key-code="' + keyCode + '"]').mousedown();
+        return false;
+        e.preventDefault();
+        });
+
+        $(window).on("keyup", e => {
+        let keyCode = e.keyCode;
+        $('.key[key-code="' + keyCode + '"]').removeClass("pressed");
+
+        return false;
+        e.preventDefault();
+        });
+    </script>
+</body>
+</html> 
